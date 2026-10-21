@@ -1,0 +1,455 @@
+// Тапкыч Олимп — маалымат базасынын схемасы.
+// Эки тилдүү талаалар: *Ky (милдеттүү) жана *Ru (милдеттүү эмес).
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Enums ----------
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum Language {
+  ky
+  ru
+}
+
+enum AnswerType {
+  INTEGER
+  DECIMAL
+  TEXT
+  MULTIPLE_CHOICE
+}
+
+enum OlympiadLevel {
+  SCHOOL
+  DISTRICT
+  REGION
+  NATIONAL
+  INTERNATIONAL
+}
+
+enum ProblemStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ProgressStatus {
+  ATTEMPTED
+  SOLVED
+}
+
+enum ContestStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// ---------- Users & geography ----------
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String
+  fullName         String
+  role             Role      @default(STUDENT)
+  language         Language  @default(ky)
+  grade            Int? // 7–11, окуучулар үчүн гана
+  schoolId         String?
+  customSchoolName String? // тизмеде жок мектеп («Башка»)
+  regionId         String?
+  totalPoints      Int       @default(0)
+  level            Int       @default(1)
+  currentStreak    Int       @default(0)
+  longestStreak    Int       @default(0)
+  lastActiveDate   DateTime? @db.Date // Asia/Bishkek боюнча акыркы чечилген күн
+  avatarUrl        String?
+  isProfilePublic  Boolean   @default(true)
+  isActive         Boolean   @default(true)
+  emailVerified    Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  school School? @relation(fields: [schoolId], references: [id], onDelete: SetNull)
+  region Region? @relation(fields: [regionId], references: [id], onDelete: SetNull)
+
+  submissions         Submission[]
+  progress            ProblemProgress[]
+  authoredProblems    Problem[]            @relation("ProblemAuthor")
+  teachingClasses     Class[]              @relation("ClassTeacher")
+  classMemberships    ClassMember[]
+  contestEntries      ContestParticipant[]
+  createdContests     Contest[]            @relation("ContestCreator")
+  achievements        UserAchievement[]
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([role])
+  @@index([totalPoints(sort: Desc)])
+  @@index([regionId, totalPoints(sort: Desc)])
+  @@index([schoolId, totalPoints(sort: Desc)])
+  @@index([grade, totalPoints(sort: Desc)])
+}
+
+model Region {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  nameKy    String
+  nameRu    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schools School[]
+  users   User[]
+}
+
+model School {
+  id        String   @id @default(cuid())
+  nameKy    String
+  nameRu    String
+  regionId  String
+  district  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  region  Region  @relation(fields: [regionId], references: [id], onDelete: Restrict)
+  users   User[]
+  classes Class[]
+
+  @@index([regionId])
+}
+
+// ---------- Catalog ----------
+
+model Subject {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  nameKy    String
+  nameRu    String
+  icon      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  topics   Topic[]
+  problems Problem[]
+  contests Contest[]
+}
+
+model Topic {
+  id        String   @id @default(cuid())
+  subjectId String
+  slug      String
+  nameKy    String
+  nameRu    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subject  Subject   @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  problems Problem[]
+
+  @@unique([subjectId, slug])
+}
+
+model Problem {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  subjectId     String
+  topicId       String
+  titleKy       String
+  titleRu       String?
+  statementKy   String
+  statementRu   String?
+  answerType    AnswerType
+  /// Серверде гана! API жоопторуна эч качан кошулбайт.
+  correctAnswer Json
+  tolerance     Float? // DECIMAL үчүн
+  /// [{ id, textKy, textRu? }] — MULTIPLE_CHOICE үчүн
+  choices       Json?
+  solutionKy    String
+  solutionRu    String?
+  hintKy        String?
+  hintRu        String?
+  difficulty    Int // 1–5
+  olympiadLevel OlympiadLevel
+  gradeFrom     Int
+  gradeTo       Int
+  points        Int           @default(10)
+  source        String?
+  status        ProblemStatus @default(DRAFT)
+  reviewNote    String? // админдин сунушка комментарийи
+  authorId      String?
+  solvedCount   Int           @default(0)
+  attemptCount  Int           @default(0)
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  topic   Topic   @relation(fields: [topicId], references: [id], onDelete: Restrict)
+  author  User?   @relation("ProblemAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+
+  submissions        Submission[]
+  progress           ProblemProgress[]
+  assignmentProblems AssignmentProblem[]
+  contestProblems    ContestProblem[]
+  dailyProblems      DailyProblem[]
+
+  @@index([status, subjectId, topicId])
+  @@index([status, difficulty])
+  @@index([status, olympiadLevel])
+  @@index([status, createdAt(sort: Desc)])
+  @@index([status, solvedCount(sort: Desc)])
+  @@index([authorId])
+}
+
+// ---------- Solving ----------
+
+model Submission {
+  id            String   @id @default(cuid())
+  userId        String
+  problemId     String
+  answer        String
+  isCorrect     Boolean
+  pointsAwarded Int      @default(0)
+  usedHint      Boolean  @default(false)
+  contestId     String?
+  createdAt     DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  contest Contest? @relation(fields: [contestId], references: [id], onDelete: Cascade)
+
+  @@index([userId, problemId, createdAt])
+  @@index([userId, createdAt])
+  @@index([createdAt, userId]) // жумалык/айлык рейтинг
+  @@index([problemId])
+  @@index([contestId, userId])
+}
+
+model ProblemProgress {
+  id             String         @id @default(cuid())
+  userId         String
+  problemId      String
+  status         ProgressStatus @default(ATTEMPTED)
+  attempts       Int            @default(0)
+  hintOpened     Boolean        @default(false)
+  solutionOpened Boolean        @default(false)
+  pointsEarned   Int            @default(0)
+  solvedAt       DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+  @@index([userId, status])
+  @@index([userId, updatedAt(sort: Desc)])
+}
+
+// ---------- Classes ----------
+
+model Class {
+  id        String   @id @default(cuid())
+  name      String
+  teacherId String
+  joinCode  String   @unique @db.VarChar(6)
+  schoolId  String?
+  grade     Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teacher     User          @relation("ClassTeacher", fields: [teacherId], references: [id], onDelete: Cascade)
+  school      School?       @relation(fields: [schoolId], references: [id], onDelete: SetNull)
+  members     ClassMember[]
+  assignments Assignment[]
+  contests    Contest[]
+
+  @@index([teacherId])
+}
+
+model ClassMember {
+  classId  String
+  userId   String
+  joinedAt DateTime @default(now())
+
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([classId, userId])
+  @@index([userId])
+}
+
+model Assignment {
+  id        String    @id @default(cuid())
+  classId   String
+  titleKy   String
+  titleRu   String?
+  dueDate   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  class    Class               @relation(fields: [classId], references: [id], onDelete: Cascade)
+  problems AssignmentProblem[]
+
+  @@index([classId, createdAt(sort: Desc)])
+}
+
+model AssignmentProblem {
+  assignmentId String
+  problemId    String
+  order        Int    @default(0)
+
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  problem    Problem    @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@id([assignmentId, problemId])
+  @@index([problemId])
+}
+
+// ---------- Contests ----------
+
+model Contest {
+  id              String        @id @default(cuid())
+  titleKy         String
+  titleRu         String?
+  descriptionKy   String
+  descriptionRu   String?
+  startsAt        DateTime
+  endsAt          DateTime
+  durationMinutes Int
+  subjectId       String?
+  isPublic        Boolean       @default(true)
+  classId         String? // класстык жарыш
+  /// Жарыш учурунда туура/туура эместиги көрүнөбү
+  showVerdicts    Boolean       @default(false)
+  status          ContestStatus @default(DRAFT)
+  createdById     String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  subject      Subject?             @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  class        Class?               @relation(fields: [classId], references: [id], onDelete: Cascade)
+  createdBy    User?                @relation("ContestCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  problems     ContestProblem[]
+  participants ContestParticipant[]
+  submissions  Submission[]
+
+  @@index([status, startsAt])
+  @@index([classId])
+}
+
+model ContestProblem {
+  contestId String
+  problemId String
+  order     Int    @default(0)
+  points    Int
+
+  contest Contest @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Restrict)
+
+  @@id([contestId, problemId])
+  @@index([problemId])
+}
+
+model ContestParticipant {
+  contestId    String
+  userId       String
+  registeredAt DateTime  @default(now())
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  score        Int       @default(0)
+  penalty      Int       @default(0)
+
+  contest Contest @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([contestId, userId])
+  @@index([contestId, score(sort: Desc), penalty])
+  @@index([userId])
+}
+
+// ---------- Daily problem & achievements ----------
+
+model DailyProblem {
+  id        String   @id @default(cuid())
+  date      DateTime @unique @db.Date // Asia/Bishkek боюнча күн
+  problemId String
+  isAuto    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([problemId])
+}
+
+model Achievement {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  nameKy        String
+  nameRu        String
+  descriptionKy String
+  descriptionRu String
+  icon          String
+  threshold     Int      @default(1)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  users UserAchievement[]
+}
+
+model UserAchievement {
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@id([userId, achievementId])
+}
+
+// ---------- Sessions ----------
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  userAgent String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

@@ -1,0 +1,164 @@
+/* Design tokens — Тапкыч Олимп.
+   Theme: system by default; [data-theme="light" | "dark"] on <html> overrides it. */
+
+:root {
+  /* Brand palette */
+  --navy-950: #061227;
+  --navy-900: #0b1d3a;
+  --navy-800: #12284f;
+  --navy-700: #1b3a6b;
+  --navy-600: #2a5196;
+  --navy-100: #e4ebf7;
+  --gold-500: #e8b10f;
+  --gold-400: #f5c542;
+  --gold-100: #fdf3d0;
+
+  /* Typography */
+  --font-sans:
+    'Golos Text', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(1.9rem, 1.4rem + 2.4vw, 3rem);
+  --leading-tight: 1.2;
+  --leading-normal: 1.55;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Spacing (4px scale) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* Layout */
+  --container-max: 1180px;
+  --gutter: 16px;
+  --header-height: 64px;
+  --bottom-nav-height: 64px;
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-normal: 220ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Light theme (default) */
+  color-scheme: light;
+  --color-bg: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef2f9;
+  --color-surface-3: #e2e8f3;
+  --color-text: #0b1d3a;
+  --color-text-muted: #4e5d78;
+  --color-text-subtle: #6b7891;
+  --color-border: #dbe2ee;
+  --color-border-strong: #c3cddf;
+  --color-primary: #0b1d3a;
+  --color-primary-hover: #1b3a6b;
+  --color-on-primary: #ffffff;
+  --color-accent: #e8b10f;
+  --color-accent-soft: #fdf3d0;
+  --color-on-accent: #0b1d3a;
+  --color-link: #1f56c7;
+  --color-focus: #2f6fed;
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-danger: #c62828;
+  --color-danger-soft: #fde2e2;
+  --color-warning: #a16207;
+  --color-warning-soft: #fef3c7;
+  --color-header-bg: #0b1d3a;
+  --color-header-text: #ffffff;
+  --color-header-muted: #b6c3dc;
+  --shadow-sm: 0 1px 2px rgb(11 29 58 / 0.06), 0 1px 3px rgb(11 29 58 / 0.08);
+  --shadow-md: 0 4px 12px rgb(11 29 58 / 0.08), 0 2px 4px rgb(11 29 58 / 0.05);
+  --shadow-lg: 0 16px 40px rgb(11 29 58 / 0.14);
+}
+
+/* Dark theme: tokens repeated for system preference and explicit choice */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: #061227;
+    --color-surface: #0d1c38;
+    --color-surface-2: #132750;
+    --color-surface-3: #1b335f;
+    --color-text: #e8eefb;
+    --color-text-muted: #a9b8d4;
+    --color-text-subtle: #8596b5;
+    --color-border: #213a66;
+    --color-border-strong: #2e4c80;
+    --color-primary: #f5c542;
+    --color-primary-hover: #ffd666;
+    --color-on-primary: #0b1d3a;
+    --color-accent: #f5c542;
+    --color-accent-soft: rgb(245 197 66 / 0.14);
+    --color-on-accent: #0b1d3a;
+    --color-link: #8ab4ff;
+    --color-focus: #8ab4ff;
+    --color-success: #4ade80;
+    --color-success-soft: rgb(74 222 128 / 0.14);
+    --color-danger: #f87171;
+    --color-danger-soft: rgb(248 113 113 / 0.14);
+    --color-warning: #fbbf24;
+    --color-warning-soft: rgb(251 191 36 / 0.14);
+    --color-header-bg: #081530;
+    --color-header-text: #ffffff;
+    --color-header-muted: #a9b8d4;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 14px rgb(0 0 0 / 0.35);
+    --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.45);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #061227;
+  --color-surface: #0d1c38;
+  --color-surface-2: #132750;
+  --color-surface-3: #1b335f;
+  --color-text: #e8eefb;
+  --color-text-muted: #a9b8d4;
+  --color-text-subtle: #8596b5;
+  --color-border: #213a66;
+  --color-border-strong: #2e4c80;
+  --color-primary: #f5c542;
+  --color-primary-hover: #ffd666;
+  --color-on-primary: #0b1d3a;
+  --color-accent: #f5c542;
+  --color-accent-soft: rgb(245 197 66 / 0.14);
+  --color-on-accent: #0b1d3a;
+  --color-link: #8ab4ff;
+  --color-focus: #8ab4ff;
+  --color-success: #4ade80;
+  --color-success-soft: rgb(74 222 128 / 0.14);
+  --color-danger: #f87171;
+  --color-danger-soft: rgb(248 113 113 / 0.14);
+  --color-warning: #fbbf24;
+  --color-warning-soft: rgb(251 191 36 / 0.14);
+  --color-header-bg: #081530;
+  --color-header-text: #ffffff;
+  --color-header-muted: #a9b8d4;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 14px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.45);
+}

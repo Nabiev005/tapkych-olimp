@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ky">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Тапкыч Олимп — математика, физика жана информатика боюнча олимпиадага даярдоо платформасы."
+    />
+    <meta name="theme-color" content="#0b1d3a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Golos Text: full Cyrillic incl. Kyrgyz ң ө ү (cyrillic-ext subset) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Тапкыч Олимп</title>
+    <script>
+      // Apply saved theme and language before first paint (no flash).
+      try {
+        var theme = localStorage.getItem('olimp.theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+        var lang = localStorage.getItem('olimp.lang');
+        if (lang === 'ky' || lang === 'ru') document.documentElement.lang = lang;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

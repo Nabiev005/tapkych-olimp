@@ -1,0 +1,217 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, rgb(245 197 66 / 0.18), transparent 60%),
+    radial-gradient(40rem 24rem at -10% 110%, rgb(42 81 150 / 0.55), transparent 60%),
+    var(--navy-900);
+  color: #ffffff;
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding-block: var(--space-12) var(--space-16);
+}
+
+.hero__badge {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: rgb(245 197 66 / 0.15);
+  color: var(--gold-400);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.hero__title {
+  max-width: 18ch;
+  font-size: var(--text-3xl);
+  letter-spacing: -0.01em;
+}
+
+.hero__subtitle {
+  max-width: 60ch;
+  color: #c9d4ea;
+  font-size: var(--text-lg);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.hero__secondary {
+  color: #ffffff;
+}
+
+.hero__secondary:hover {
+  background: rgb(255 255 255 / 0.08) !important;
+}
+
+.hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin: var(--space-4) 0 0;
+}
+
+.hero__stats div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.hero__stats dt {
+  color: #a9b8d4;
+  font-size: var(--text-sm);
+}
+
+.hero__stats dd {
+  margin: 0;
+  color: var(--gold-400);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+}
+
+/* ---------- Sections ---------- */
+.home-section {
+  padding-block: var(--space-12) 0;
+}
+
+.home-section:last-child {
+  padding-bottom: var(--space-12);
+}
+
+.home-section__title {
+  margin-bottom: var(--space-6);
+  font-size: var(--text-2xl);
+}
+
+.subject-grid,
+.feature-grid {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.subject-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+}
+
+.subject-card__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+.subject-card--math .subject-card__icon {
+  background: var(--color-accent-soft);
+  color: var(--color-warning);
+}
+
+.subject-card--physics .subject-card__icon {
+  background: var(--navy-100);
+  color: var(--navy-700);
+}
+
+.subject-card--informatics .subject-card__icon {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.subject-card__name {
+  font-size: var(--text-xl);
+}
+
+.subject-card__text,
+.feature__text {
+  color: var(--color-text-muted);
+}
+
+.feature {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.feature__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.feature__title {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-lg);
+}
+
+.ordo-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--color-border-strong);
+  background: var(--color-surface-2);
+}
+
+.ordo-banner__title {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-xl);
+}
+
+.ordo-banner__text {
+  max-width: 60ch;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .subject-card--physics .subject-card__icon {
+    background: rgb(138 180 255 / 0.14);
+    color: #8ab4ff;
+  }
+}
+
+:root[data-theme='dark'] .subject-card--physics .subject-card__icon {
+  background: rgb(138 180 255 / 0.14);
+  color: #8ab4ff;
+}
+
+@media (min-width: 720px) {
+  .subject-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+
+  .ordo-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hero__inner {
+    padding-block: var(--space-16) calc(var(--space-16) + var(--space-4));
+  }
+}
