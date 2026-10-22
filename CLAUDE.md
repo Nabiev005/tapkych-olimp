@@ -141,7 +141,22 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - Frontend: `hooks/authContext.ts` + `AuthProvider.tsx` (баракча ачылганда `/auth/refresh` менен сессияны калыбына келтирет; кирген колдонуучунун `language`и колдонулат) + `useAuth.ts`; `usePermissions().can()`; `useLanguage` кирген колдонуучу үчүн `PATCH /me {language}`; `api.ts` 401 (`TOKEN_EXPIRED`/`UNAUTHORIZED`) болсо бир жолу refresh кылып, сурамды кайталайт (single-flight). `RouteGuards.tsx`: `RequireAuth` (`/login?next=`; `permission` жок болсо 404), `GuestOnly`. `safeNext()` — open redirect жок.
 - UI: `components/ui/Field.tsx` (`TextField`, `PasswordField`, `SelectField`, `FieldShell`), `fieldA11y.ts`, `Alert.tsx`, `Button` `loading`; `components/olimp/SchoolPicker.tsx` (ARIA combobox, debounce 250ms, «Мектебим тизмеде жок» режими); `components/layout/UserMenu.tsx`; барактар `pages/Auth/` (Login, Register, ForgotPassword, ResetPassword, `AuthCard`, `Auth.css`).
 
-### Тесттер (`backend/tests/`, 38 тест)
+### Маселелер, жооп, упай (3-этап)
+
+- `services/problemQueries.ts` — **жалгыз** ачык select'тер (`problemCardSelect`, `problemDetailSelect`); `correctAnswer`/`tolerance` аларда жок. `visibleProblemWhere()` = `PUBLISHED` жана аягына чыга элек жарышка (`endsAt > now`) кирбеген маселелер — жарыш бүткөндө маселе каталогго автоматтык түрдө чыгат.
+- `services/problems.ts` — `listProblems` (фильтрлер: subject, topic, difficulty `1,2`, level, grade (`gradeFrom ≤ g ≤ gradeTo`), status (кирген колдонуучу үчүн гана), q (titleKy/titleRu ILIKE), sort `new|difficulty|popular`, пагинация `page/pageSize≤50`), `getProblem` (кеңеш/чечим тексттери ачылгандан кийин гана; `progress`, акыркы 10 аракет, окшош 4 маселе — ошол эле тема, кыйындык ±1), `openHint`, `openSolution` (чечилгенден кийин же `attempts ≥ 3` болсо; болбосо `403 SOLUTION_LOCKED`), `listSubjects`, `listTopics`.
+- `Problem.attemptCount` = аракет кылган **колдонуучулардын** саны (ProblemProgress түзүлгөндө +1), `solvedCount` = чечкендердин саны; `solvedPercent = solved/attempted`.
+- `services/submissions.ts` → `submitAnswer`: бир транзакция; упай бир гана жолу (шарттуу `updateMany ATTEMPTED→SOLVED`, параллель сурамдардан корголгон); `calculatePoints` (кеңеш ×0.5, биринчи аракет +10%, чечим мурун ачылса 0) + бүгүнкү `DailyProblem` болсо `+DAILY_PROBLEM_BONUS` (упай > 0 болгондо); `totalPoints`, `level`, streak (`services/streak.ts`), `solvedCount`; жетишкендиктер (`services/achievements.ts`: `first-solve`/`solved-N` — чечилгендер, `streak-N` — streak). Жооп: `isCorrect, pointsAwarded, alreadySolved, dailyBonus, attempts, canOpenSolution, totalPoints, level, leveledUp, currentStreak, achievements[]`.
+- `services/answerChecker.ts` — INTEGER (BigInt, боштуктар/`+`/алдыңкы нөлдөр/юникод минус), DECIMAL (`,`=`.`, tolerance, демейки 1e-9), TEXT (NFC, боштуксуз, кичине тамга, бир нече туура жооп), MULTIPLE_CHOICE (id так).
+- `services/streak.ts` — `applySolve` (Бишкек күнү: ошол эле күн — өзгөрбөйт, кечээ — +1, андан эрте — 1), `effectiveStreak` (бир толук күн өтсө 0 көрсөтүлөт; `/me` ушуну кайтарат).
+- Маршруттар: `GET /api/subjects`, `GET /api/subjects/:slug/topics`, `GET /api/problems` (`optionalAuth`), `GET /api/problems/:slug`, `POST …/submit` (`problems:submit` + `createSubmitLimiter` 5/мүн, ачкыч `userId:slug`), `POST …/hint`, `POST …/solution`.
+- Frontend: `utils/parseMathText.ts` + `components/olimp/MathText.tsx` (KaTeX `trust:false`, `strict:'ignore'`; ` ``` ` код блоктору; `\$` — жөнөкөй доллар; `inline` режими), `katex.min.css` `main.tsx`те. `utils/localize.ts` (`pickText` → `{text, missing}`, `pickName`), `TranslationMissing` белгиси. `components/olimp/`: `ProblemCard` (бүт карточка шилтеме), `DifficultyStars`, `OlympiadBadge`, `CelebrationModal`; `components/ui/`: `Modal` (native `<dialog>`), `Badge`, `Pagination`. `utils/levels.ts` — backend деңгээлдеринин көчүрмөсү. Барактар: `pages/Problems/ProblemsPage` (фильтрлер URL'де, skeleton, EmptyState, пагинация), `pages/Problem/ProblemPage` (`key={slug}` менен кайра монтаждалат; `AnswerForm` жооп түрүнө жараша; туура/туура эмес анимациясы `aria-live`; кеңеш/чечим ырастоо модалы — чечилгенден кийин суроосуз; аракеттер; окшош маселелер; деңгээл/жетишкендик модалы).
+- Seed'деги 540 формула KaTeX strict режиминде катасыз текшерилди.
+
+### Тесттер (`backend/tests/`, 65 тест)
+
+- `answerChecker.test.ts`, `streak.test.ts` (Бишкек убакыт алкагы, ай/жыл чеги) — 17.
+- `integration/problems.test.ts` (10) — **`correctAnswer`/`tolerance` эч бир жоопто жок** (бардык ачкычтарды рекурсивдүү текшерет), DRAFT жана келе жаткан жарыштын маселелери жашырылган (404), фильтр/издөө/иреттөө/пагинация, упай (биринчи аракет 22), кайра чечүүдө 0, деңгээл/streak/`first-solve`, кеңеш ×0.5, чечим кулпусу жана упайдан ажыратуу, `3,145` DECIMAL, күнүмдүк бонус, 401 жана 5/мүн лимит, окшош маселелер, предметтер.
 
 - Интеграциялык тесттер (`tests/integration/`) `TEST_DATABASE_URL` берилгенде гана иштейт (бош, миграция кылынган **өзүнчө** база; продакшн Neon'го эч качан эмес): `TEST_DATABASE_URL=postgresql://… npm test -w backend`. Тест колдонуучулары `@itest.tapkych.local` — тесттен кийин өчүрүлөт. Тест базасы Neon сыяктуу `C.UTF-8` локалында болушу керек (болбосо кириллица ILIKE иштебейт).
 - `integration/auth.test.ts` (11) — каттоо (cookie HttpOnly/Path), кайталанган email, эки тилдеги валидация, мугалим + «Башка» мектеп, ADMIN каттоосу жана башка облустун мектеби четке кагылат, кирүү, `/me` GET/PATCH, refresh ротациясы + logout, паролду калыбына келтирүү (email кармалат), бөгөттөлгөн колдонуучу, облус/мектеп издөө.
@@ -172,9 +187,14 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 Жасалды: «Аутентификация (2-этап)» бөлүмүндөгүнүн баары. Текшерилди: 38 тест (11 интеграциялык — убактылуу PostgreSQL 17, `C.UTF-8`), `eslint .` таза, `tsc` backend + frontend, `vite build`, `i18n:check` (122 ачкыч); smoke (port 4100, тест базасы): демо окуучу кирүү, cookie менен refresh, орусча ката, кириллица менен мектеп издөө.
 Эскертүү: колдонуучу `npm run dev` иштетип турганда `prisma generate` (жана `npm run build`) Windows'та `EPERM` берет — DLL'ди иштеп жаткан backend кармайт. Dev серверди токтотуп, кайра иштетүү керек.
 
-### ⏭ 3–8-этаптар
+### ✅ 3-этап — Маселелер, жооп текшерүү, кеңеш/чечим, упай/деңгээл/streak (2026-10-22)
 
-3: каталог, маселе барагы, `answerChecker` (+тесттер), кеңеш/чечим, упай/деңгээл/streak, `MathText`, жоопко rate limit. 4: рейтинг, профиль, күнүмдүк маселе, жетишкендиктер. 5: мугалим бөлүмү. 6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
+Жасалды: «Маселелер, жооп, упай (3-этап)» бөлүмүндөгүнүн баары. Текшерилди: 65 тест (21 интеграциялык), eslint, tsc, `vite build`, `i18n:check` (206 ачкыч), KaTeX strict (540 формула).
+Белгиленди: frontend бандлы 650 kB (KaTeX) — 8-этапта lazy routes менен бөлүү.
+
+### ⏭ 4–8-этаптар
+
+4: рейтинг, профиль, күнүмдүк маселе, жетишкендиктер. 5: мугалим бөлүмү. 6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
 
 ## Колдонуучуга берилген суроолор / божомолдор (жооп күтүлүүдө)
 

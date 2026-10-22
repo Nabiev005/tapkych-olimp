@@ -3,6 +3,7 @@ import { getLevelProgress } from '../config/levels.js';
 import { permissionsForRole } from '../config/permissions.js';
 import { prisma } from '../db.js';
 import { AppError } from '../utils/errors.js';
+import { dateColumnToDay, effectiveStreak } from './streak.js';
 import type { UpdateMeInput } from '../validators/auth.js';
 
 // Never select passwordHash: this is the only shape of the own user sent to clients.
@@ -35,6 +36,8 @@ export function toMeDto(user: MeRow) {
   const progress = getLevelProgress(user.totalPoints);
   return {
     ...user,
+    // A streak is broken once a full Bishkek day passes without a solve
+    currentStreak: effectiveStreak(user.currentStreak, dateColumnToDay(user.lastActiveDate)),
     permissions: permissionsForRole(user.role),
     levelProgress: {
       progress: progress.progress,

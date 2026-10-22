@@ -1,0 +1,189 @@
+/* Olympiad-specific components */
+
+.difficulty {
+  display: inline-flex;
+  gap: 1px;
+  color: var(--color-border-strong);
+}
+
+.difficulty__star.is-on {
+  color: var(--color-accent);
+}
+
+.translation-missing {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+/* ---------- Problem card ---------- */
+.problem-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.problem-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.problem-card:focus-within {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.problem-card.is-solved {
+  border-left: 4px solid var(--color-success);
+}
+
+.problem-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.problem-card__subject {
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.problem-card__status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-warning);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.problem-card__status.is-solved {
+  color: var(--color-success);
+}
+
+.problem-card__title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+}
+
+.problem-card__link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.problem-card__link:focus-visible {
+  outline: none;
+}
+
+.problem-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.problem-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.problem-card__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+}
+
+.problem-card__points {
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.problem-card__percent {
+  color: var(--color-text-muted);
+}
+
+.problem-grid {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .problem-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .problem-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- Celebration ---------- */
+.celebrate__text {
+  color: var(--color-text);
+  font-size: var(--text-lg);
+}
+
+.celebrate__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.celebrate__item {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  color: var(--color-text);
+}
+
+.celebrate__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-warning);
+}
+
+.celebrate__desc {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}

@@ -16,7 +16,9 @@ export type ErrorCode =
   | 'ACCOUNT_BLOCKED'
   | 'INVALID_REFRESH_TOKEN'
   | 'INVALID_RESET_TOKEN'
-  | 'SCHOOL_NOT_IN_REGION';
+  | 'SCHOOL_NOT_IN_REGION'
+  | 'NO_HINT'
+  | 'SOLUTION_LOCKED';
 
 /** Error with a stable code; the message is translated by errorHandler via req.lang. */
 export class AppError extends Error {

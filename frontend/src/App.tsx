@@ -9,6 +9,8 @@ import { ResetPasswordPage } from './pages/Auth/ResetPasswordPage';
 import { ComingSoonPage } from './pages/ComingSoon/ComingSoonPage';
 import { HomePage } from './pages/Home/HomePage';
 import { NotFoundPage } from './pages/NotFound/NotFoundPage';
+import { ProblemPage } from './pages/Problem/ProblemPage';
+import { ProblemsPage } from './pages/Problems/ProblemsPage';
 
 // Sections from later stages show a placeholder for now.
 const router = createBrowserRouter([
@@ -16,7 +18,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: '/', element: <HomePage /> },
-      { path: '/problems', element: <ComingSoonPage /> },
+      { path: '/problems', element: <ProblemsPage /> },
+      { path: '/problems/:slug', element: <ProblemPage /> },
       { path: '/leaderboard', element: <ComingSoonPage /> },
       { path: '/contests', element: <ComingSoonPage /> },
       {

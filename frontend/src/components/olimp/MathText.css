@@ -1,0 +1,32 @@
+.math-text {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+.math-inline .katex {
+  font-size: 1.08em;
+}
+
+.math-block {
+  display: block;
+  margin: var(--space-3) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: normal;
+  /* room for scrollbars on long formulas (mobile) */
+  padding-bottom: 2px;
+}
+
+.code-block {
+  margin: var(--space-3) 0;
+  padding: var(--space-3) var(--space-4);
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  white-space: pre;
+}

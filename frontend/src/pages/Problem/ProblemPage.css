@@ -1,0 +1,340 @@
+.problem-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  color: var(--color-text-muted);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+}
+
+.problem-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.problem-header__crumbs {
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+}
+
+.problem-header__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-2xl);
+}
+
+.problem-header__solved {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  font-size: var(--text-sm);
+}
+
+.problem-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.problem-header__points {
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.problem-layout {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.problem-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-lg);
+}
+
+.problem-statement,
+.problem-answer,
+.help-card,
+.aside-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+
+.problem-statement {
+  font-size: var(--text-lg);
+}
+
+.problem-statement .translation-missing {
+  align-self: flex-start;
+}
+
+.problem-statement__source {
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+}
+
+/* ---------- Answer ---------- */
+.answer-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.answer-form__label {
+  font-weight: var(--weight-semibold);
+}
+
+.answer-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.answer-form__input {
+  flex: 1 1 200px;
+  min-height: 52px;
+  font-size: var(--text-lg);
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.choices legend {
+  margin-bottom: var(--space-2);
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: var(--space-2) var(--space-4);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.choice:hover {
+  border-color: var(--color-primary);
+}
+
+.choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choice:has(input:checked) {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.choice:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.choice__marker {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+}
+
+.choice:has(input:checked) .choice__marker {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-medium);
+}
+
+.feedback svg {
+  flex: none;
+}
+
+.feedback--correct {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  animation: feedback-pop 420ms var(--ease-out);
+}
+
+.feedback--wrong {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  animation: feedback-shake 360ms ease-in-out;
+}
+
+.feedback__bonus {
+  font-weight: var(--weight-regular);
+}
+
+@keyframes feedback-pop {
+  0% {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes feedback-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(6px);
+  }
+}
+
+/* ---------- Hint / solution ---------- */
+.problem-help {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.help-card .btn {
+  align-self: flex-start;
+}
+
+.help-card__locked {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.help-card__locked svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* ---------- Aside ---------- */
+.problem-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.aside-card__empty {
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+}
+
+.attempts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.attempt {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: var(--space-2);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+}
+
+.attempt.is-correct {
+  color: var(--color-success);
+}
+
+.attempt__answer {
+  overflow: hidden;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attempt__time {
+  grid-column: 2;
+  color: var(--color-text-subtle);
+  font-size: var(--text-xs);
+}
+
+.similar-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1024px) {
+  .problem-layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+  }
+
+  .problem-aside {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+  }
+}

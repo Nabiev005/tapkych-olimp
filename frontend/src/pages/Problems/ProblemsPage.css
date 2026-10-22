@@ -1,0 +1,65 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.filters__search {
+  position: relative;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.filters__search .input {
+  padding-left: 40px;
+}
+
+.filters__search-icon {
+  position: absolute;
+  top: 13px;
+  left: 12px;
+  color: var(--color-text-subtle);
+  pointer-events: none;
+}
+
+.filters__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.filters__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.problems-result {
+  margin-bottom: var(--space-4);
+}
+
+.problems-result__count {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.problem-grid > li > .problem-card {
+  height: 100%;
+}
+
+@media (min-width: 720px) {
+  .filters__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .filters {
+    padding: var(--space-5);
+  }
+
+  .filters__grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
