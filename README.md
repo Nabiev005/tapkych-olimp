@@ -14,13 +14,13 @@
 
 ## Локалдык ишке киргизүү
 
-Талаптар: Node.js 20+, PostgreSQL 14+ (база **UTF8** коддоосунда болушу керек — болбосо кыргызча тамгалар сакталбайт).
+Талаптар: Node.js 20+ жана PostgreSQL базасы — сунушталганы [Neon](https://neon.tech) (Frankfurt аймагы). База **UTF8** коддоосунда болушу керек, болбосо кыргызча тамгалар сакталбайт (Neon демейки UTF8).
 
 ```bash
 # 1. Көз карандылыктарды орнотуу (backend + frontend бир жолу)
 npm install
 
-# 2. Env файлын даярдоо жана DATABASE_URL, JWT_* маанилерин толтуруу
+# 2. Env файлын даярдоо: DATABASE_URL (Neon pooled), DIRECT_URL (Neon direct), JWT_* маанилерин толтуруу
 cp .env.example backend/.env
 
 # 3. Миграция жана баштапкы маалыматтар

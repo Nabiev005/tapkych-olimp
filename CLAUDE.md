@@ -52,6 +52,7 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - **Prisma 6** ге бекитилген (Prisma 7 `prisma.config.ts` жана driver adapter талап кылат). `package.json#prisma` deprecated эскертүүсү — зыянсыз.
 - bcrypt 6 Windows үчүн даяр бинардык менен келет (node-gyp керек эмес).
 - PostgreSQL базасы **UTF8** болушу шарт — WIN1251 базада кыргызча «ү, ө, ң» сакталбайт (локалдык Windows'та текшерүүдө ушуга туш болдук).
+- **БД — Neon** (колдонуучу тандады, 2026-10-22): `DATABASE_URL` — pooled (`-pooler`, `pgbouncer=true`), `DIRECT_URL` — түз туташуу (Prisma migrate). Экөө тең `schema.prisma` datasource ичинде (`url` + `directUrl`) жана Vercel env'де болушу керек.
 - Локалдык машинада PostgreSQL/Docker жок. 1-этапта миграция жана seed scratchpad'дагы убактылуу `embedded-postgres` менен текшерилди (долбоорго кошулган эмес).
 
 ## Архитектура жана негизги файлдар
