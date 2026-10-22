@@ -41,7 +41,7 @@ export function HomePage() {
           </h1>
           <p className="hero__subtitle">{t('home.hero.subtitle')}</p>
           <div className="hero__actions">
-            <ButtonLink to="/register" variant="accent" size="lg">
+            <ButtonLink to="/register" variant="white" size="lg">
               {t('home.hero.cta')}
               <ArrowRight size={20} aria-hidden="true" />
             </ButtonLink>

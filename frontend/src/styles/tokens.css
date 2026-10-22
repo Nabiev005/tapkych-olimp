@@ -1,15 +1,18 @@
-/* Design tokens — Тапкыч Олимп.
+/* Design tokens — Тапкыч Олимп. Clean blue & white palette for an education product.
    Theme: system by default; [data-theme="light" | "dark"] on <html> overrides it. */
 
 :root {
   /* Brand palette */
-  --navy-950: #061227;
-  --navy-900: #0b1d3a;
-  --navy-800: #12284f;
-  --navy-700: #1b3a6b;
-  --navy-600: #2a5196;
-  --navy-100: #e4ebf7;
-  --gold-500: #e8b10f;
+  --blue-950: #0a1f4d;
+  --blue-900: #0f2f6e;
+  --blue-800: #143c8c;
+  --blue-700: #1a4fb8;
+  --blue-600: #1d5bd8;
+  --blue-500: #3b7bf0;
+  --blue-400: #6ea0ff;
+  --blue-100: #e3edff;
+  --blue-50: #f2f6ff;
+  --gold-500: #e0a800;
   --gold-400: #f5c542;
   --gold-100: #fdf3d0;
 
@@ -63,102 +66,117 @@
 
   /* Light theme (default) */
   color-scheme: light;
-  --color-bg: #f5f7fb;
+  --color-bg: #f5f8fd;
   --color-surface: #ffffff;
-  --color-surface-2: #eef2f9;
-  --color-surface-3: #e2e8f3;
-  --color-text: #0b1d3a;
-  --color-text-muted: #4e5d78;
-  --color-text-subtle: #6b7891;
-  --color-border: #dbe2ee;
-  --color-border-strong: #c3cddf;
-  --color-primary: #0b1d3a;
-  --color-primary-hover: #1b3a6b;
+  --color-surface-2: #eef3fc;
+  --color-surface-3: #dfe8f7;
+  --color-text: #0f1f3d;
+  --color-text-muted: #4a5a78;
+  --color-text-subtle: #66748f;
+  --color-border: #dce5f2;
+  --color-border-strong: #c2d0e6;
+  --color-primary: #1d5bd8;
+  --color-primary-hover: #1749b0;
+  --color-primary-soft: #e3edff;
   --color-on-primary: #ffffff;
-  --color-accent: #e8b10f;
+  --color-accent: #e0a800; /* achievements, streaks */
   --color-accent-soft: #fdf3d0;
-  --color-on-accent: #0b1d3a;
-  --color-link: #1f56c7;
-  --color-focus: #2f6fed;
+  --color-on-accent: #0f1f3d;
+  --color-link: #1a4fb8;
+  --color-focus: #3b7bf0;
   --color-success: #15803d;
   --color-success-soft: #dcfce7;
   --color-danger: #c62828;
   --color-danger-soft: #fde2e2;
-  --color-warning: #a16207;
+  --color-warning: #9a6200;
   --color-warning-soft: #fef3c7;
-  --color-header-bg: #0b1d3a;
-  --color-header-text: #ffffff;
-  --color-header-muted: #b6c3dc;
-  --shadow-sm: 0 1px 2px rgb(11 29 58 / 0.06), 0 1px 3px rgb(11 29 58 / 0.08);
-  --shadow-md: 0 4px 12px rgb(11 29 58 / 0.08), 0 2px 4px rgb(11 29 58 / 0.05);
-  --shadow-lg: 0 16px 40px rgb(11 29 58 / 0.14);
+  --color-header-bg: rgb(255 255 255 / 0.92);
+  --color-header-border: #dce5f2;
+  --color-header-text: #0f1f3d;
+  --color-header-muted: #4a5a78;
+  --color-header-hover: #eef3fc;
+  --color-hero-from: #1d5bd8;
+  --color-hero-to: #0f2f6e;
+  --shadow-sm: 0 1px 2px rgb(15 47 110 / 0.06), 0 1px 3px rgb(15 47 110 / 0.07);
+  --shadow-md: 0 4px 14px rgb(15 47 110 / 0.08), 0 2px 4px rgb(15 47 110 / 0.05);
+  --shadow-lg: 0 18px 40px rgb(15 47 110 / 0.14);
 }
 
 /* Dark theme: tokens repeated for system preference and explicit choice */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --color-bg: #061227;
-    --color-surface: #0d1c38;
-    --color-surface-2: #132750;
-    --color-surface-3: #1b335f;
+    --color-bg: #0a1122;
+    --color-surface: #101a30;
+    --color-surface-2: #16233f;
+    --color-surface-3: #1e2e52;
     --color-text: #e8eefb;
     --color-text-muted: #a9b8d4;
-    --color-text-subtle: #8596b5;
-    --color-border: #213a66;
-    --color-border-strong: #2e4c80;
-    --color-primary: #f5c542;
-    --color-primary-hover: #ffd666;
-    --color-on-primary: #0b1d3a;
+    --color-text-subtle: #8797b5;
+    --color-border: #22345a;
+    --color-border-strong: #304878;
+    --color-primary: #6ea0ff;
+    --color-primary-hover: #8db5ff;
+    --color-primary-soft: rgb(110 160 255 / 0.14);
+    --color-on-primary: #0a1122;
     --color-accent: #f5c542;
     --color-accent-soft: rgb(245 197 66 / 0.14);
-    --color-on-accent: #0b1d3a;
-    --color-link: #8ab4ff;
-    --color-focus: #8ab4ff;
+    --color-on-accent: #0a1122;
+    --color-link: #8db5ff;
+    --color-focus: #8db5ff;
     --color-success: #4ade80;
     --color-success-soft: rgb(74 222 128 / 0.14);
     --color-danger: #f87171;
     --color-danger-soft: rgb(248 113 113 / 0.14);
     --color-warning: #fbbf24;
     --color-warning-soft: rgb(251 191 36 / 0.14);
-    --color-header-bg: #081530;
-    --color-header-text: #ffffff;
+    --color-header-bg: rgb(16 26 48 / 0.92);
+    --color-header-border: #22345a;
+    --color-header-text: #e8eefb;
     --color-header-muted: #a9b8d4;
+    --color-header-hover: #16233f;
+    --color-hero-from: #143c8c;
+    --color-hero-to: #0a1f4d;
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
     --shadow-md: 0 4px 14px rgb(0 0 0 / 0.35);
-    --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.45);
+    --shadow-lg: 0 18px 40px rgb(0 0 0 / 0.45);
   }
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --color-bg: #061227;
-  --color-surface: #0d1c38;
-  --color-surface-2: #132750;
-  --color-surface-3: #1b335f;
+  --color-bg: #0a1122;
+  --color-surface: #101a30;
+  --color-surface-2: #16233f;
+  --color-surface-3: #1e2e52;
   --color-text: #e8eefb;
   --color-text-muted: #a9b8d4;
-  --color-text-subtle: #8596b5;
-  --color-border: #213a66;
-  --color-border-strong: #2e4c80;
-  --color-primary: #f5c542;
-  --color-primary-hover: #ffd666;
-  --color-on-primary: #0b1d3a;
+  --color-text-subtle: #8797b5;
+  --color-border: #22345a;
+  --color-border-strong: #304878;
+  --color-primary: #6ea0ff;
+  --color-primary-hover: #8db5ff;
+  --color-primary-soft: rgb(110 160 255 / 0.14);
+  --color-on-primary: #0a1122;
   --color-accent: #f5c542;
   --color-accent-soft: rgb(245 197 66 / 0.14);
-  --color-on-accent: #0b1d3a;
-  --color-link: #8ab4ff;
-  --color-focus: #8ab4ff;
+  --color-on-accent: #0a1122;
+  --color-link: #8db5ff;
+  --color-focus: #8db5ff;
   --color-success: #4ade80;
   --color-success-soft: rgb(74 222 128 / 0.14);
   --color-danger: #f87171;
   --color-danger-soft: rgb(248 113 113 / 0.14);
   --color-warning: #fbbf24;
   --color-warning-soft: rgb(251 191 36 / 0.14);
-  --color-header-bg: #081530;
-  --color-header-text: #ffffff;
+  --color-header-bg: rgb(16 26 48 / 0.92);
+  --color-header-border: #22345a;
+  --color-header-text: #e8eefb;
   --color-header-muted: #a9b8d4;
+  --color-header-hover: #16233f;
+  --color-hero-from: #143c8c;
+  --color-hero-to: #0a1f4d;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 0.35);
-  --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.45);
+  --shadow-lg: 0 18px 40px rgb(0 0 0 / 0.45);
 }

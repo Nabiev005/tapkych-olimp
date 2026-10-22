@@ -2,9 +2,8 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(60rem 30rem at 85% -10%, rgb(245 197 66 / 0.18), transparent 60%),
-    radial-gradient(40rem 24rem at -10% 110%, rgb(42 81 150 / 0.55), transparent 60%),
-    var(--navy-900);
+    radial-gradient(50rem 26rem at 90% -20%, rgb(255 255 255 / 0.16), transparent 60%),
+    linear-gradient(135deg, var(--color-hero-from), var(--color-hero-to));
   color: #ffffff;
 }
 
@@ -19,8 +18,8 @@
 .hero__badge {
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
-  background: rgb(245 197 66 / 0.15);
-  color: var(--gold-400);
+  background: rgb(255 255 255 / 0.16);
+  color: #ffffff;
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
 }
@@ -33,7 +32,7 @@
 
 .hero__subtitle {
   max-width: 60ch;
-  color: #c9d4ea;
+  color: #dbe7ff;
   font-size: var(--text-lg);
 }
 
@@ -64,13 +63,13 @@
 }
 
 .hero__stats dt {
-  color: #a9b8d4;
+  color: #c7d8fb;
   font-size: var(--text-sm);
 }
 
 .hero__stats dd {
   margin: 0;
-  color: var(--gold-400);
+  color: #ffffff;
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
 }
@@ -117,13 +116,13 @@
 }
 
 .subject-card--math .subject-card__icon {
-  background: var(--color-accent-soft);
-  color: var(--color-warning);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .subject-card--physics .subject-card__icon {
-  background: var(--navy-100);
-  color: var(--navy-700);
+  background: #e6f4ff;
+  color: #0369a1;
 }
 
 .subject-card--informatics .subject-card__icon {

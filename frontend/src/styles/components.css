@@ -49,6 +49,15 @@
   filter: brightness(1.06);
 }
 
+.btn--white {
+  background: #ffffff;
+  color: var(--blue-700);
+}
+
+.btn--white:hover:not(:disabled) {
+  background: var(--blue-50);
+}
+
 .btn--secondary {
   background: var(--color-surface);
   color: var(--color-text);

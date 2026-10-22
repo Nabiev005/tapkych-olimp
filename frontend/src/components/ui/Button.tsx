@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Link, type LinkProps } from 'react-router-dom';
 
-type Variant = 'primary' | 'accent' | 'secondary' | 'ghost';
+type Variant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'white';
 type Size = 'sm' | 'md' | 'lg';
 
 interface StyleProps {

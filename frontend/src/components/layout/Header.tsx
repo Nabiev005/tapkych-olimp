@@ -35,7 +35,7 @@ export function Header() {
         <div className="site-header__actions">
           <LanguageSwitcher />
           <ThemeSwitcher />
-          <ButtonLink to="/login" variant="accent" size="sm" className="site-header__login">
+          <ButtonLink to="/login" variant="primary" size="sm" className="site-header__login">
             {t('common.actions.login')}
           </ButtonLink>
         </div>
