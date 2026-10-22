@@ -140,6 +140,10 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 Жасалды: жогорудагынын баары. Текшерилди: `tsc` (backend + frontend) катасыз, `eslint .` таза, `prettier` формат, 23 тест өттү, `i18n:check` (62 ачкыч), `vite build`, backend `build`; миграция + seed чыныгы PostgreSQL 17'де (seed эки жолу — идемпотенттүү), schema↔migrations drift жок; smoke: `/api/health` Vite прокси аркылуу, 404 орусча, SPA маршруттары, бөтөн Origin → 403.
 Текшерилген жок: UI'ды браузерде визуалдык көрүү (браузер куралы жок) — колдонуучу `npm run dev` менен карап чыгышы керек.
 
+### ✅ Neon туташтырылды (2026-10-22)
+
+Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `production`). `backend/.env` даректери коюлду (git'ке кирбейт), `migrate deploy` + seed ийгиликтүү: 9 аймак, 19 мектеп, 33 маселе, 5 демо колдонуучу; `server_encoding = UTF8`. Эскертүү: Neon'дун direct дареги pooled даректен `-pooler` алынып салынып гана алынат (хост `.c-8.` бөлүгүн сактайт).
+
 ### ⏭ 2-этап — Катталуу/кирүү, ролдор жана укуктар
 
 Пландалган: `validators/auth.ts` (Zod), `services/auth.ts` (bcrypt, JWT access + refresh httpOnly cookie, RefreshToken ротациясы), `/api/auth/*` (register, login, logout, refresh, forgot-password, reset-password — email консолго), `GET/PATCH /api/me` (`language` дагы), `GET /api/regions`, `GET /api/schools?region=&q=`, `middleware/auth.ts`, `requirePermission()`, `authLimiter`; frontend: `useAuth`, `usePermissions`, Login/Register/Forgot/Reset барактары, тилди `User.language`ке сактоо, `auth.*` котормолору, тесттер.
