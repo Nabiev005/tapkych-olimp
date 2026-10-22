@@ -18,10 +18,33 @@ function classes({ variant = 'primary', size = 'md', block }: StyleProps, extra?
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, StyleProps {
   children: ReactNode;
+  /** Shows a spinner and disables the button */
+  loading?: boolean;
 }
 
-export function Button({ variant, size, block, className, type = 'button', ...rest }: ButtonProps) {
-  return <button type={type} className={classes({ variant, size, block }, className)} {...rest} />;
+export function Button({
+  variant,
+  size,
+  block,
+  className,
+  type = 'button',
+  loading,
+  disabled,
+  children,
+  ...rest
+}: ButtonProps) {
+  return (
+    <button
+      type={type}
+      className={classes({ variant, size, block }, className)}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      {...rest}
+    >
+      {loading && <span className="spinner" aria-hidden="true" />}
+      {children}
+    </button>
+  );
 }
 
 export interface ButtonLinkProps extends LinkProps, StyleProps {}

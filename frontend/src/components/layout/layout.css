@@ -249,3 +249,107 @@
     font-size: var(--text-base);
   }
 }
+
+/* ---------- User menu ---------- */
+.user-menu {
+  position: relative;
+}
+
+.user-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-2) 0 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-header-text);
+  cursor: pointer;
+}
+
+.user-menu__trigger:hover {
+  background: var(--color-header-hover);
+}
+
+.user-menu__name {
+  display: none;
+  max-width: 12ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: var(--weight-medium);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+}
+
+.user-menu__panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 60;
+  min-width: 220px;
+  padding: var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.user-menu__head {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-1);
+}
+
+.user-menu__head span {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.user-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-menu__item:hover {
+  background: var(--color-surface-2);
+}
+
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-16) var(--space-4);
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 640px) {
+  .user-menu__name {
+    display: inline;
+  }
+}

@@ -1,13 +1,16 @@
 import { Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import { ButtonLink } from '../ui/Button';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { NAV_ITEMS } from './navItems';
 import { ThemeSwitcher } from './ThemeSwitcher';
+import { UserMenu } from './UserMenu';
 
 export function Header() {
   const { t } = useTranslation();
+  const { status } = useAuth();
 
   return (
     <header className="site-header">
@@ -35,9 +38,12 @@ export function Header() {
         <div className="site-header__actions">
           <LanguageSwitcher />
           <ThemeSwitcher />
-          <ButtonLink to="/login" variant="primary" size="sm" className="site-header__login">
-            {t('common.actions.login')}
-          </ButtonLink>
+          {status === 'authenticated' && <UserMenu />}
+          {status === 'guest' && (
+            <ButtonLink to="/login" variant="primary" size="sm" className="site-header__login">
+              {t('common.actions.login')}
+            </ButtonLink>
+          )}
         </div>
       </div>
     </header>

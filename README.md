@@ -49,6 +49,16 @@ npm run dev
 | `npm run admin:create -w backend -- --email … --password … --name …` | Админ түзүү                                                |
 | `npm run demo:remove -w backend`                                     | Демо аккаунттарды өчүрүү (продакшнда милдеттүү)            |
 
+### Интеграциялык тесттер
+
+Чыныгы база менен тесттер `TEST_DATABASE_URL` берилгенде гана иштейт. Бул **өзүнчө, бош** база болушу керек (мисалы Neon'до `test` бутагы). Продакшн базаны эч качан бербеңиз:
+
+```bash
+# адегенде тест базасына миграция
+DATABASE_URL=$TEST_DATABASE_URL DIRECT_URL=$TEST_DATABASE_URL npx prisma migrate deploy --schema backend/prisma/schema.prisma
+TEST_DATABASE_URL=postgresql://... npm test
+```
+
 ## Демо аккаунттар
 
 Seed `SEED_DEMO_USERS=false` болбосо түзүлөт. **Продакшнда `npm run demo:remove -w backend` менен өчүрүңүз.**

@@ -1,8 +1,9 @@
-import rateLimit from 'express-rate-limit';
+import rateLimit, { type Options } from 'express-rate-limit';
 import { t } from '../i18n/index.js';
 import { sendError } from '../utils/response.js';
 
-function createLimiter(windowMs: number, limit: number) {
+// Factories: every app instance (and every test) gets its own counters.
+function createLimiter(windowMs: number, limit: number, extra: Partial<Options> = {}) {
   return rateLimit({
     windowMs,
     limit,
@@ -11,11 +12,12 @@ function createLimiter(windowMs: number, limit: number) {
     handler: (req, res) => {
       sendError(res, 429, 'TOO_MANY_REQUESTS', t(req.lang ?? 'ky', 'errors.TOO_MANY_REQUESTS'));
     },
+    ...extra,
   });
 }
 
 /** General limit for the whole API */
-export const apiLimiter = createLimiter(60 * 1000, 300);
+export const createApiLimiter = () => createLimiter(60 * 1000, 300);
 
 /** Strict limit for register / login / password reset */
-export const authLimiter = createLimiter(15 * 60 * 1000, 20);
+export const createAuthLimiter = () => createLimiter(15 * 60 * 1000, 20);

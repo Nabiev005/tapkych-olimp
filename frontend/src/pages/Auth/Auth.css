@@ -1,0 +1,121 @@
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: var(--space-8) var(--space-12);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  padding: var(--space-6);
+}
+
+.auth-card--wide {
+  max-width: 560px;
+}
+
+.auth-card__title {
+  font-size: var(--text-2xl);
+}
+
+.auth-card__subtitle {
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.auth-form__row {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.auth-form__aside {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: calc(-1 * var(--space-2));
+  font-size: var(--text-sm);
+}
+
+.auth-page__footer {
+  margin-top: var(--space-5);
+  color: var(--color-text-muted);
+}
+
+/* Role choice (student / teacher) */
+.role-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.role-choice legend {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.role-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast),
+    background-color var(--duration-fast);
+}
+
+.role-option:hover {
+  border-color: var(--color-primary);
+}
+
+.role-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.role-option:has(input:checked) {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.role-option:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.role-option__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-semibold);
+}
+
+.role-option__hint {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 560px) {
+  .auth-card {
+    padding: var(--space-8);
+  }
+
+  .auth-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

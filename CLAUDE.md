@@ -15,8 +15,10 @@
 
 ## Иштөө эрежелери (колдонуучунун талаптары)
 
-- Этап-этабы менен иштөө. Ар бир этаптын башында эмне кылынарын кыскача айтуу; аягында текшерип, отчет берип, **кийинки этапка уруксат суроо**.
-- Ар бир этаптан кийин git commit (кыска, түшүнүктүү билдирүү).
+- Этап-этабы менен иштөө. Ар бир этаптын башында эмне кылынарын кыскача айтуу; аягында текшерип, кыска отчет берүү.
+- **2026-10-22 колдонуучу: «план боюнча толук уланта берели»** — этаптардын ортосунда уруксат күтпөй улантуу.
+- Ар бир этаптан кийин git commit жана GitHub'га **push** (колдонуучу «пуш кыла тур» деген).
+- **Дизайн: таза, билим берүүгө ылайыктуу көк-ак түстөр** (колдонуучунун талабы, 2026-10-22). Алтын түс — жетишкендиктер/streak үчүн гана.
 - Стектен чыкпоо; жаңы фреймворк/китепкана керек болсо — адегенде суроо.
 - Кыргызча тексттер табигый кыргыз тилинде (орусчадан сөзмө-сөз эмес). Термин так эмес болсо — суроо.
 - Коддогу комментарийлер кыска, **англисче** (бирдей болушу үчүн ушуну тандадык). Колдонуучуга арналган документтер (README, DEPLOYMENT, .env.example) — кыргызча.
@@ -113,7 +115,7 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - `src/i18n/locales/ky.json`, `ru.json` — модулдар: `common`, `home`, `errors` (кийин `auth`, `problems`, `leaderboard`, `teacher`, `contest`, `profile`, `admin`).
 - `src/hooks/useLanguage.ts` (2-этапта кирген колдонуучу үчүн `PATCH /api/me` кошулат), `useTheme.ts` (`system → light → dark`, `<html data-theme>`, localStorage `olimp.theme`).
 - `index.html` — биринчи сүрөттөлүшкө чейин тема/тилди колдонгон кичине скрипт; Golos Text шрифти (Google Fonts, cyrillic-ext — ң ө ү).
-- `src/styles/tokens.css` — түстөр (кочкул көк `#0b1d3a`, алтын `#f5c542`/`#e8b10f`), шрифттер, аралыктар, радиустар, көлөкөлөр; караңгы тема `@media (prefers-color-scheme: dark)` + `:root[data-theme='dark']`. Караңгы темада негизги баскыч — алтын.
+- `src/styles/tokens.css` — көк-ак палитра: негизги `--color-primary` `#1d5bd8` (караңгы темада `#6ea0ff`), ак беттер, ачык көк фон `#f5f8fd`; алтын `--color-accent` жетишкендиктер үчүн; header ак (жарым тунук + blur), hero көк градиент (`--color-hero-from/to`). Караңгы тема `@media (prefers-color-scheme: dark)` + `:root[data-theme='dark']`.
 - `src/components/layout/` — `Layout` (skip-link, header, main, footer, bottom nav), `Header` (бренд, десктоп навигация ≥900px, `LanguageSwitcher` KY/RU, `ThemeSwitcher`, «Кирүү»), `BottomNav` (<900px, 5 пункт), `Footer` (Тапкыч ордо шилтемеси `https://tapkych.com`).
 - `src/components/ui/` — `Button`/`ButtonLink`, `Skeleton`, `EmptyState`. Стилдери `styles/components.css`.
 - `src/services/api.ts` — axios (`/api`, `withCredentials`, `Accept-Language`), каталарды `ApiError`ге айландырат, `getData<T>()`.
@@ -126,7 +128,24 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - Prisma `binaryTargets = ["native", "rhel-openssl-3.0.x"]` (Vercel).
 - ⚠️ Vercel'де чыныгы текшерүү 8-этапта (функциянын `backend/dist`ти таба алышы, rewrite'тан кийин `req.url`).
 
-### Тесттер (`backend/tests/`, 23 тест)
+### Аутентификация (2-этап)
+
+- Access token: JWT HS256, `ACCESS_TOKEN_TTL` (15m), payload `{ sub, role }`, frontend'де эстутумда гана (`services/api.ts` → `setAccessToken`).
+- Refresh token: random 48 байт, базада `sha256` хэши (`RefreshToken`), cookie `olimp_rt` (httpOnly, `SameSite=Lax`, `Secure` продакшнда, `Path=/api/auth`). `/auth/refresh` ар бир чакырганда ротация кылат; алмаштырылган токен 10 сек. өткөндөн кийин кайра колдонулса — колдонуучунун бардык сессиялары жабылат (уурдоодон коргоо). Шарттуу `updateMany` эки параллель ротациядан сактайт.
+- `register`: ADMIN өзү каттала албайт (Zod enum STUDENT|TEACHER); окуучуга `grade` милдеттүү; `schoolId` же `customSchoolName` милдеттүү; мектеп облуска таандык экени текшерилет (`SCHOOL_NOT_IN_REGION`); тил — body.language же `req.lang`.
+- `login`: белгисиз email жана туура эмес пароль үчүн бирдей ката (`INVALID_CREDENTIALS`); бөгөттөлгөн → `ACCOUNT_BLOCKED`.
+- `forgot-password` дайыма `{ ok: true }` (аккаунттарды санап билүүгө болбойт); токен 1 саат, email `services/email.ts` аркылуу (азыр консолго, `setEmailSender()` менен алмаштырылат); шилтеме `${APP_URL}/reset-password?token=…`. `reset-password` бардык refresh токендерди жокко чыгарат.
+- `GET /api/me` (`requireAuth`), `PATCH /api/me` (`requirePermission('profile:update')`, `.strict()` — `role` сыяктуу талааларды кабыл албайт). `toMeDto` → `permissions[]`, `levelProgress`. `passwordHash` эч качан select'ке кирбейт (`meSelect`).
+- `GET /api/regions`, `GET /api/schools?regionId=&q=&limit=` — ILIKE издөө (Neon `C.UTF-8` локалында кириллица/ү ө ң чоң-кичине тамгага карабай иштейт).
+- Middleware: `requireAuth`, `optionalAuth`, `currentUser(req)`, `requirePermission(...perms)` (`[requireAuth, check]` массивин кайтарат). Rate limit — фабрикалар (`createApiLimiter`, `createAuthLimiter`), `createApp()` ар бир чакырганда жаңы эсептегичтер.
+- Frontend: `hooks/authContext.ts` + `AuthProvider.tsx` (баракча ачылганда `/auth/refresh` менен сессияны калыбына келтирет; кирген колдонуучунун `language`и колдонулат) + `useAuth.ts`; `usePermissions().can()`; `useLanguage` кирген колдонуучу үчүн `PATCH /me {language}`; `api.ts` 401 (`TOKEN_EXPIRED`/`UNAUTHORIZED`) болсо бир жолу refresh кылып, сурамды кайталайт (single-flight). `RouteGuards.tsx`: `RequireAuth` (`/login?next=`; `permission` жок болсо 404), `GuestOnly`. `safeNext()` — open redirect жок.
+- UI: `components/ui/Field.tsx` (`TextField`, `PasswordField`, `SelectField`, `FieldShell`), `fieldA11y.ts`, `Alert.tsx`, `Button` `loading`; `components/olimp/SchoolPicker.tsx` (ARIA combobox, debounce 250ms, «Мектебим тизмеде жок» режими); `components/layout/UserMenu.tsx`; барактар `pages/Auth/` (Login, Register, ForgotPassword, ResetPassword, `AuthCard`, `Auth.css`).
+
+### Тесттер (`backend/tests/`, 38 тест)
+
+- Интеграциялык тесттер (`tests/integration/`) `TEST_DATABASE_URL` берилгенде гана иштейт (бош, миграция кылынган **өзүнчө** база; продакшн Neon'го эч качан эмес): `TEST_DATABASE_URL=postgresql://… npm test -w backend`. Тест колдонуучулары `@itest.tapkych.local` — тесттен кийин өчүрүлөт. Тест базасы Neon сыяктуу `C.UTF-8` локалында болушу керек (болбосо кириллица ILIKE иштебейт).
+- `integration/auth.test.ts` (11) — каттоо (cookie HttpOnly/Path), кайталанган email, эки тилдеги валидация, мугалим + «Башка» мектеп, ADMIN каттоосу жана башка облустун мектеби четке кагылат, кирүү, `/me` GET/PATCH, refresh ротациясы + logout, паролду калыбына келтирүү (email кармалат), бөгөттөлгөн колдонуучу, облус/мектеп издөө.
+- `permissions.test.ts` — `requirePermission` (401/403 которулган/200), JWT.
 
 - `config.test.ts` — деңгээлдер, упай эрежелери, укуктар.
 - `seedData.test.ts` — 9 аймак, ≥30 маселе (15/10/5), уникалдуу slug, темалар бар, бардык эки тилдүү талаалар толук, жооп форматы түргө туура, `$` тең салмакта.
@@ -144,15 +163,22 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 
 Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `production`). `backend/.env` даректери коюлду (git'ке кирбейт), `migrate deploy` + seed ийгиликтүү: 9 аймак, 19 мектеп, 33 маселе, 5 демо колдонуучу; `server_encoding = UTF8`. Эскертүү: Neon'дун direct дареги pooled даректен `-pooler` алынып салынып гана алынат (хост `.c-8.` бөлүгүн сактайт).
 
-### ⏭ 2-этап — Катталуу/кирүү, ролдор жана укуктар
+### ✅ Дизайн көк-ак палитрага которулду (2026-10-22)
 
-Пландалган: `validators/auth.ts` (Zod), `services/auth.ts` (bcrypt, JWT access + refresh httpOnly cookie, RefreshToken ротациясы), `/api/auth/*` (register, login, logout, refresh, forgot-password, reset-password — email консолго), `GET/PATCH /api/me` (`language` дагы), `GET /api/regions`, `GET /api/schools?region=&q=`, `middleware/auth.ts`, `requirePermission()`, `authLimiter`; frontend: `useAuth`, `usePermissions`, Login/Register/Forgot/Reset барактары, тилди `User.language`ке сактоо, `auth.*` котормолору, тесттер.
+Колдонуучунун талабы боюнча. `tokens.css`, header (ак), hero (көк градиент), `Button` `white` варианты, favicon.
 
-### 3–8-этаптар
+### ✅ 2-этап — Катталуу/кирүү, ролдор жана укуктар (2026-10-22)
+
+Жасалды: «Аутентификация (2-этап)» бөлүмүндөгүнүн баары. Текшерилди: 38 тест (11 интеграциялык — убактылуу PostgreSQL 17, `C.UTF-8`), `eslint .` таза, `tsc` backend + frontend, `vite build`, `i18n:check` (122 ачкыч); smoke (port 4100, тест базасы): демо окуучу кирүү, cookie менен refresh, орусча ката, кириллица менен мектеп издөө.
+Эскертүү: колдонуучу `npm run dev` иштетип турганда `prisma generate` (жана `npm run build`) Windows'та `EPERM` берет — DLL'ди иштеп жаткан backend кармайт. Dev серверди токтотуп, кайра иштетүү керек.
+
+### ⏭ 3–8-этаптар
 
 3: каталог, маселе барагы, `answerChecker` (+тесттер), кеңеш/чечим, упай/деңгээл/streak, `MathText`, жоопко rate limit. 4: рейтинг, профиль, күнүмдүк маселе, жетишкендиктер. 5: мугалим бөлүмү. 6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
 
 ## Колдонуучуга берилген суроолор / божомолдор (жооп күтүлүүдө)
+
+Жооп келгенге чейин төмөнкү божомолдор колдонулат (колдонуучу «уланта берели» деди).
 
 1. Тапкыч ордонун дареги `https://tapkych.com` деп алынды — туурабы?
 2. «Подсказка» терминин кыргызча «кеңеш» деп которуу сунушталды — макулбу (же «жардам», «ишарат»)?

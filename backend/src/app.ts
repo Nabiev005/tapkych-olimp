@@ -5,8 +5,8 @@ import helmet from 'helmet';
 import { env } from './config/env.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { language } from './middleware/language.js';
-import { apiLimiter } from './middleware/rateLimit.js';
-import { apiRouter } from './routes/index.js';
+import { createApiLimiter } from './middleware/rateLimit.js';
+import { createApiRouter } from './routes/index.js';
 import { AppError } from './utils/errors.js';
 
 export function createApp() {
@@ -30,7 +30,7 @@ export function createApp() {
   app.use(express.json({ limit: '1mb' }));
   app.use(cookieParser());
 
-  app.use('/api', apiLimiter, apiRouter);
+  app.use('/api', createApiLimiter(), createApiRouter());
   app.use(notFoundHandler);
   app.use(errorHandler);
 

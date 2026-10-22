@@ -7,9 +7,16 @@ export type ErrorCode =
   | 'VALIDATION_ERROR'
   | 'INVALID_JSON'
   | 'UNAUTHORIZED'
+  | 'TOKEN_EXPIRED'
   | 'FORBIDDEN'
   | 'TOO_MANY_REQUESTS'
-  | 'CORS_NOT_ALLOWED';
+  | 'CORS_NOT_ALLOWED'
+  | 'EMAIL_TAKEN'
+  | 'INVALID_CREDENTIALS'
+  | 'ACCOUNT_BLOCKED'
+  | 'INVALID_REFRESH_TOKEN'
+  | 'INVALID_RESET_TOKEN'
+  | 'SCHOOL_NOT_IN_REGION';
 
 /** Error with a stable code; the message is translated by errorHandler via req.lang. */
 export class AppError extends Error {
