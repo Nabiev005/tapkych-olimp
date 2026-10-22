@@ -6,6 +6,7 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
   type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { describedBy } from './fieldA11y';
@@ -136,6 +137,35 @@ export function SelectField({
           </option>
         ))}
       </select>
+    </FieldShell>
+  );
+}
+
+export interface TextAreaFieldProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label: string;
+  error?: string;
+  hint?: string;
+}
+
+export function TextAreaField({
+  label,
+  error,
+  hint,
+  id: idProp,
+  className,
+  ...rest
+}: TextAreaFieldProps) {
+  const autoId = useId();
+  const id = idProp ?? autoId;
+  return (
+    <FieldShell id={id} label={label} error={error} hint={hint}>
+      <textarea
+        id={id}
+        className={['input', 'textarea', className].filter(Boolean).join(' ')}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy(id, error, hint)}
+        {...rest}
+      />
     </FieldShell>
   );
 }

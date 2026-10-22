@@ -1,8 +1,10 @@
 import type { CookieOptions, Request, Response } from 'express';
 import { isProduction } from '../config/env.js';
+import { currentUser } from '../middleware/auth.js';
 import * as authService from '../services/auth.js';
 import { sendData } from '../utils/response.js';
 import {
+  changePasswordSchema,
   forgotPasswordSchema,
   loginSchema,
   registerSchema,
@@ -59,6 +61,17 @@ export async function logout(req: Request, res: Response): Promise<void> {
 export async function forgotPassword(req: Request, res: Response): Promise<void> {
   const { email } = forgotPasswordSchema.parse(req.body);
   await authService.forgotPassword(email);
+  sendData(res, { ok: true });
+}
+
+export async function changePassword(req: Request, res: Response): Promise<void> {
+  const { currentPassword, newPassword } = changePasswordSchema.parse(req.body);
+  await authService.changePassword(
+    currentUser(req).id,
+    currentPassword,
+    newPassword,
+    readRefreshCookie(req),
+  );
   sendData(res, { ok: true });
 }
 

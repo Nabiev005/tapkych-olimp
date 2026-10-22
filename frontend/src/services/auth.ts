@@ -30,6 +30,8 @@ export const authApi = {
   forgotPassword: (email: string) => postData<{ ok: true }>('/auth/forgot-password', { email }),
   resetPassword: (token: string, password: string) =>
     postData<{ ok: true }>('/auth/reset-password', { token, password }),
+  changePassword: (currentPassword: string, newPassword: string) =>
+    postData<{ ok: true }>('/auth/change-password', { currentPassword, newPassword }),
   me: () => getData<Me>('/me'),
   updateMe: (payload: UpdateMePayload) => patchData<Me>('/me', payload),
 };

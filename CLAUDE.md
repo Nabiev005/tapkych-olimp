@@ -9,6 +9,10 @@
 - Негизги тил — **кыргызча** (демейки, браузердин тилине карабайт), экинчиси — орусча.
 - Толук техникалык тапшырма колдонуучунун биринчи билдирүүсүндө берилген (14 бөлүм, 8 этап). Талапка каршы чечим керек болсо — адегенде колдонуучудан суроо.
 
+## Колдонуучунун админ аккаунту
+
+- `ajbeknabiev90@gmail.com` — Neon продакшн базасында **ADMIN** (2026-10-22, `scripts/create-admin.ts` менен түзүлдү, аты «Айбек»). Убактылуу пароль колдонуучуга чатта берилди; колдонуучу аны «Профиль → Паролду өзгөртүү» аркылуу алмаштырышы керек. Паролдорду эч качан бул файлга же репозиторийге жазбоо.
+
 ## Репозиторий
 
 - GitHub: https://github.com/Nabiev005/tapkych-olimp (негизги бутак `main`).
@@ -163,7 +167,19 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - Графиктердин түстөрү dataviz валидатору менен текшерилди: `--chart-bar` жарык `#1d5bd8` (PASS), караңгы `#4f8cff` (`#6ea0ff` lightness band'дан өтпөдү); heatmap — бир түстүү көк шкала, ар бир тема үчүн өзүнчө кадамдар.
 - Орусча көптүк сандардан качуу үчүн «Табылды: N», «Серия: N дн.» сыяктуу формат колдонулат (i18n:check ky/ru ачкычтарынын бирдейлигин талап кылат).
 
-### Тесттер (`backend/tests/`, 76 тест)
+### Мугалимдин бөлүмү (5-этап)
+
+- `services/classes.ts`: `createClass` (6 белгилүү `joinCode`, алфавит `ABCDEFGHJKMNPQRSTUVWXYZ23456789` — окшош белгилер жок, `P2002` болсо кайра аракет), `listClasses` (`teaching` + `joined`), `joinClass` (идемпотенттүү, `INVALID_JOIN_CODE`, өз классына `OWN_CLASS`), `getClass` (мугалим/админ: `joinCode`, мүчөлөр (упай, чечкендер), тапшырмаларды толук аткаргандар; мүчө: код жок, мүчөлөр жок, `mySolved`; башкалар → 404), `removeMember` (мугалим чыгарат же окуучу өзү `members/me`), `getClassStats` (тапшырмалардагы маселелер — эң аз чечилгендер биринчи).
+- `services/assignments.ts`: `createAssignment` (маселелер `visibleProblemWhere` боюнча гана, болбосо `PROBLEMS_UNAVAILABLE`; тартиби сакталат), `getAssignment` (мугалим: окуучу × маселе матрицасы `SOLVED|ATTEMPTED|null`; окуучу: өз статустары), `myAssignments` (dashboard үчүн бүтө элек тапшырмалар).
+- `services/proposals.ts` + `validators/problemInput.ts` (Zod, жооп түрүнө жараша текшерүү: бүтүн/ондук сан, tolerance, варианттар уникалдуу, туура вариант бар, `gradeTo ≥ gradeFrom`; каталар i18n ачкычтары аркылуу эки тилде). `problemDataFromInput()` 7-этаптагы админ редактору үчүн да. Сунуш → `DRAFT`, `uniqueSlug()` (`utils/slug.ts` — кыргызча/орусча транслитерация + 6 hex). `GET/POST /api/proposals` (`problems:propose`).
+- `POST /api/auth/change-password` (учурдагы пароль талап кылынат, `WRONG_PASSWORD`; учурдагы сессиядан башкалары жабылат). Frontend: `pages/Profile/ChangePassword.tsx`.
+- Маршруттар: `GET/POST /api/classes`, `POST /api/classes/join`, `GET /api/classes/:id`, `GET /api/classes/:id/stats`, `DELETE /api/classes/:id/members/:userId|me`, `POST /api/classes/:id/assignments`, `GET /api/classes/:id/assignments/:assignmentId`.
+- Frontend: `pages/Classes/` (`ClassesPage` — түзүү + код менен кошулуу + тизмелер; `ClassPage` — код көчүрүү баскычы, тапшырмалар, мүчөлөр таблицасы, чыгаруу/чыгуу модалдары, кыйын маселелер; `NewAssignmentPage` — каталогдон издеп тандоо, тартибин өзгөртүү, мөөнөт; `AssignmentPage` — ✓/✗/— матрицасы), `pages/Propose/ProposePage` (сунуштар тизмеси статустары менен). `components/olimp/ProblemForm.tsx` + `utils/problemForm.ts` (`toProblemPayload`/`fromProblemPayload`) — KY/RU өтмөктөрү, KaTeX алдын ала көрүү, варианттар редактору; админ редакторунда кайра колдонулат. `TextAreaField`. UserMenu: «Класстарым», «Маселе сунуштоо» (`problems:propose`). Dashboard'до тапшырмалар.
+
+### Тесттер (`backend/tests/`, 87 тест)
+
+- `integration/classes.test.ts` (7) — класс түзүү/код, кошулуу (кичине тамга, идемпотенттүү, туура эмес код, өз классы), класс барагынын көрүнүшү (мугалим/мүчө/бөтөн → 404), тапшырма матрицасы + dashboard + статистика, жеткиликсиз маселелер жана бөтөн класс, чыгаруу/чыгуу, сунуштар (DRAFT каталогдо жок, эки тилдеги валидация).
+- `integration/password.test.ts` — пароль өзгөртүү. `slug.test.ts` — транслитерация, join code.
 
 - `integration/rating.test.ts` (10) — тең орундар, мугалим/0 упай кирбейт, жашыруун ысымдар, `me` баракта жок болсо да, класс фильтри, жума рейтинги (эски упайлар кирбейт), мектептердин суммасы, профилде `@` жок, жашыруун профиль 403/ээсине 200, daily автоматтык жана туруктуу, dashboard.
 - `streak.test.ts` — жума/ай чектери Бишкек боюнча.
@@ -209,9 +225,13 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 Жасалды: «Рейтинг, профиль, күнүмдүк маселе (4-этап)» бөлүмүндөгүнүн баары. Текшерилди: 76 тест (31 интеграциялык), eslint, tsc, build, `i18n:check` (273 ачкыч), графиктердин түстөрү валидатор менен.
 
-### ⏭ 5–8-этаптар
+### ✅ 5-этап — Мугалимдин бөлүмү (2026-10-22)
 
-5: мугалим бөлүмү. 6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
+Жасалды: «Мугалимдин бөлүмү (5-этап)» бөлүмүндөгүнүн баары + пароль өзгөртүү + колдонуучунун админ аккаунту. Класстык жарыш 6-этапта. Текшерилди: 87 тест (39 интеграциялык), eslint, tsc, build, `i18n:check` (390 ачкыч).
+
+### ⏭ 6–8-этаптар
+
+6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
 
 ## Колдонуучуга берилген суроолор / божомолдор (жооп күтүлүүдө)
 

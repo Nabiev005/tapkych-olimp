@@ -144,6 +144,34 @@ export async function forgotPassword(email: string): Promise<void> {
   });
 }
 
+/** Changes the password; all other sessions are ended (the current one is kept). */
+export async function changePassword(
+  userId: string,
+  currentPassword: string,
+  newPassword: string,
+  currentRefreshToken?: string,
+): Promise<void> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { passwordHash: true },
+  });
+  if (!user || !(await bcrypt.compare(currentPassword, user.passwordHash))) {
+    throw new AppError(400, 'WRONG_PASSWORD');
+  }
+  const passwordHash = await bcrypt.hash(newPassword, env.BCRYPT_ROUNDS);
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: userId }, data: { passwordHash } }),
+    prisma.refreshToken.updateMany({
+      where: {
+        userId,
+        revokedAt: null,
+        ...(currentRefreshToken ? { tokenHash: { not: sha256(currentRefreshToken) } } : {}),
+      },
+      data: { revokedAt: new Date() },
+    }),
+  ]);
+}
+
 export async function resetPassword(token: string, password: string): Promise<void> {
   const stored = await prisma.passwordResetToken.findUnique({
     where: { tokenHash: sha256(token) },

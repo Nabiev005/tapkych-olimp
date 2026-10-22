@@ -9,6 +9,7 @@ import { Skeleton } from '../../components/ui/Skeleton';
 import { useAuth } from '../../hooks/useAuth';
 import { ApiError, errorMessage } from '../../services/api';
 import { ratingApi, type PublicProfile } from '../../services/rating';
+import { ChangePassword } from './ChangePassword';
 import { ProfileSettings } from './ProfileSettings';
 import { ProfileView } from './ProfileView';
 
@@ -63,6 +64,7 @@ export function ProfilePage() {
       {profile && (
         <ProfileView profile={profile}>
           <ProfileSettings onSaved={reload} />
+          <ChangePassword />
         </ProfileView>
       )}
     </div>

@@ -1,12 +1,13 @@
 import { prisma } from '../db.js';
+import { myAssignments } from './assignments.js';
 import { getDailyProblem } from './daily.js';
 import { problemCardSelect, visibleProblemWhere } from './problemQueries.js';
 import { toProblemCards } from './problems.js';
 
-/** Data for the signed-in home page (7.12). Assignments are added in stage 5. */
+/** Data for the signed-in home page (7.12). */
 export async function getDashboard(userId: string) {
   const now = new Date();
-  const [daily, recent, upcomingContests] = await Promise.all([
+  const [daily, recent, upcomingContests, assignments] = await Promise.all([
     getDailyProblem(userId),
     // "Continue": problems the user tried but hasn't solved yet
     prisma.problem.findMany({
@@ -32,6 +33,7 @@ export async function getDashboard(userId: string) {
         durationMinutes: true,
       },
     }),
+    myAssignments(userId),
   ]);
 
   const continueRows = recent
@@ -46,5 +48,6 @@ export async function getDashboard(userId: string) {
     daily,
     continue: await toProblemCards(continueRows, userId),
     upcomingContests,
+    assignments,
   };
 }

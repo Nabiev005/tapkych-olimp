@@ -601,3 +601,15 @@
   background: var(--color-primary);
   transition: width var(--duration-normal) var(--ease-out);
 }
+
+.textarea {
+  min-height: 96px;
+  padding: var(--space-3);
+  line-height: var(--leading-normal);
+  resize: vertical;
+}
+
+.textarea--code {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}

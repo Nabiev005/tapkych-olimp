@@ -19,7 +19,12 @@ export type ErrorCode =
   | 'SCHOOL_NOT_IN_REGION'
   | 'NO_HINT'
   | 'SOLUTION_LOCKED'
-  | 'PROFILE_PRIVATE';
+  | 'PROFILE_PRIVATE'
+  | 'INVALID_JOIN_CODE'
+  | 'OWN_CLASS'
+  | 'PROBLEMS_UNAVAILABLE'
+  | 'UNKNOWN_TOPIC'
+  | 'WRONG_PASSWORD';
 
 /** Error with a stable code; the message is translated by errorHandler via req.lang. */
 export class AppError extends Error {

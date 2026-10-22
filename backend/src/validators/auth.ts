@@ -40,6 +40,11 @@ export const resetPasswordSchema = z.object({
   password,
 });
 
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1).max(200),
+  newPassword: password,
+});
+
 export const updateMeSchema = z
   .object({
     fullName: z.string().trim().min(2).max(100),

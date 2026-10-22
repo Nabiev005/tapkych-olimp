@@ -1,8 +1,9 @@
-import { ChevronDown, LogOut, UserRound } from 'lucide-react';
+import { ChevronDown, FilePlus2, LogOut, UserRound, Users } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { usePermissions } from '../../hooks/usePermissions';
 
 function initials(name: string): string {
   return name
@@ -17,6 +18,7 @@ function initials(name: string): string {
 export function UserMenu() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
+  const { can } = usePermissions();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const menuId = useId();
@@ -75,6 +77,26 @@ export function UserMenu() {
             <UserRound size={18} aria-hidden="true" />
             {t('auth.menu.profile')}
           </Link>
+          <Link
+            to="/classes"
+            role="menuitem"
+            className="user-menu__item"
+            onClick={() => setOpen(false)}
+          >
+            <Users size={18} aria-hidden="true" />
+            {t('auth.menu.classes')}
+          </Link>
+          {can('problems:propose') && (
+            <Link
+              to="/propose"
+              role="menuitem"
+              className="user-menu__item"
+              onClick={() => setOpen(false)}
+            >
+              <FilePlus2 size={18} aria-hidden="true" />
+              {t('auth.menu.propose')}
+            </Link>
+          )}
           <button
             type="button"
             role="menuitem"

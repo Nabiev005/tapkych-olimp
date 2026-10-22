@@ -1,4 +1,5 @@
 import { getData } from './api';
+import type { MyAssignment } from './classes';
 import type { Page, ProblemCard } from './problems';
 import type { Role } from './types';
 
@@ -88,6 +89,7 @@ export interface Dashboard {
   daily: DailyProblem | null;
   continue: ProblemCard[];
   upcomingContests: UpcomingContest[];
+  assignments: MyAssignment[];
 }
 
 export interface LeaderboardFilters {

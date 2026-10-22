@@ -1,4 +1,4 @@
-import { CalendarClock, Gift, Sparkles, Timer } from 'lucide-react';
+import { CalendarClock, ClipboardList, Gift, Sparkles, Timer } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useLanguage } from '../../hooks/useLanguage';
 import { errorMessage } from '../../services/api';
 import { ratingApi, type Dashboard as DashboardData } from '../../services/rating';
-import { formatDateTime } from '../../utils/format';
+import { formatDate, formatDateTime } from '../../utils/format';
 import { pickText } from '../../utils/localize';
 import './Dashboard.css';
 
@@ -109,6 +109,32 @@ export function Dashboard() {
           )}
         </section>
       </div>
+
+      {data && data.assignments.length > 0 && (
+        <section className="dashboard__block" aria-labelledby="assignments-title">
+          <h2 id="assignments-title" className="section-title">
+            <ClipboardList size={20} aria-hidden="true" />
+            {t('home.dashboard.assignments')}
+          </h2>
+          <ul className="contest-list">
+            {data.assignments.map((a) => (
+              <li key={a.id} className="card contest-item">
+                <Link
+                  to={`/classes/${a.class.id}/assignments/${a.id}`}
+                  className="contest-item__title"
+                >
+                  {pickText(a.titleKy, a.titleRu, language).text}
+                </Link>
+                <span className="contest-item__date">
+                  {a.class.name} ·{' '}
+                  {t('classes.mySolved', { solved: a.solvedCount, total: a.problemCount })}
+                  {a.dueDate && ` · ${t('classes.due', { date: formatDate(a.dueDate, language) })}`}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="dashboard__block" aria-labelledby="continue-title">
         <h2 id="continue-title" className="section-title">
