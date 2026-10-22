@@ -1,0 +1,136 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.profile-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6);
+}
+
+.profile-hero__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-hero-from), var(--color-hero-to));
+  color: #ffffff;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+}
+
+.profile-hero__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.profile-hero__name {
+  font-size: var(--text-2xl);
+}
+
+.profile-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.profile-hero__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.profile-hero__since {
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+}
+
+.profile-hero__private {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  margin-top: var(--space-1);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+  font-size: var(--text-sm);
+}
+
+.profile-stats {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.profile-stat {
+  padding: var(--space-5);
+}
+
+.profile-stat--numbers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.profile-stat__value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+}
+
+.profile-stat__value svg {
+  color: var(--color-accent);
+}
+
+.profile-stat__label {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.profile-section {
+  padding: var(--space-5);
+}
+
+.profile-charts {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.settings-form > .btn {
+  align-self: flex-start;
+}
+
+.settings-form__row {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 720px) {
+  .profile-stats {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .profile-charts,
+  .settings-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

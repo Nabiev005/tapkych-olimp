@@ -153,7 +153,20 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - Frontend: `utils/parseMathText.ts` + `components/olimp/MathText.tsx` (KaTeX `trust:false`, `strict:'ignore'`; ` ``` ` код блоктору; `\$` — жөнөкөй доллар; `inline` режими), `katex.min.css` `main.tsx`те. `utils/localize.ts` (`pickText` → `{text, missing}`, `pickName`), `TranslationMissing` белгиси. `components/olimp/`: `ProblemCard` (бүт карточка шилтеме), `DifficultyStars`, `OlympiadBadge`, `CelebrationModal`; `components/ui/`: `Modal` (native `<dialog>`), `Badge`, `Pagination`. `utils/levels.ts` — backend деңгээлдеринин көчүрмөсү. Барактар: `pages/Problems/ProblemsPage` (фильтрлер URL'де, skeleton, EmptyState, пагинация), `pages/Problem/ProblemPage` (`key={slug}` менен кайра монтаждалат; `AnswerForm` жооп түрүнө жараша; туура/туура эмес анимациясы `aria-live`; кеңеш/чечим ырастоо модалы — чечилгенден кийин суроосуз; аракеттер; окшош маселелер; деңгээл/жетишкендик модалы).
 - Seed'деги 540 формула KaTeX strict режиминде катасыз текшерилди.
 
-### Тесттер (`backend/tests/`, 65 тест)
+### Рейтинг, профиль, күнүмдүк маселе (4-этап)
+
+- `services/rating.ts`: рейтингде **активдүү окуучулар гана** (`role=STUDENT`, `isActive`, упай > 0). Бардык убакыт — `User.totalPoints` (индекстер `[regionId|schoolId|grade, totalPoints desc]`); жума/ай — `Submission.pointsAwarded` суммасы (`$queryRaw`, индекс `[createdAt, userId]`, `contestId IS NULL`), мезгилдин башы Бишкек боюнча (`startOfBishkekWeek` — дүйшөмбү 00:00, `startOfBishkekMonth`), натыйжа 60 сек. `TtlCache` (`utils/cache.ts`; `clearRatingCache()` тесттер үчүн). Тең упайлар бирдей орун алат (`rankRows`). `me` — көрүүчүнүн өз орду (баракта жок болсо да). Жашыруун профиль → `fullName: null`, `school: null` («Жашыруун катышуучу»); ээси өзүн көрөт. Мектептер — окуучуларынын `totalPoints` суммасы, облус фильтри.
+- `services/profile.ts` → `GET /api/users/:id`: email жок; жашыруун профиль ээсинен башкага `403 PROFILE_PRIVATE`; статистика (предмет/кыйындык боюнча чечилгендер), активдүүлүк — акыркы 182 күн (`solvedAt + 6 саат` → Бишкек күнү), жетишкендиктер (`unlockedAt`), жалпы рейтингдеги орун.
+- `services/daily.ts` → `GET /api/daily`: бүгүнкү (Бишкек) `DailyProblem`; жок болсо автоматтык тандоо (көрүнгөн, акыркы 60 күндө daily болбогон, кыйындыгы 2–3 артыкчылыктуу, кокустан), `isAuto=true`, параллель сурамда `P2002` кармалат.
+- `services/dashboard.ts` → `GET /api/me/dashboard`: daily, «Улантуу» (ATTEMPTED, акыркы 4), келе жаткан коомдук жарыштар (3). Тапшырмалар 5-этапта кошулат.
+- Frontend: `pages/Leaderboard/LeaderboardPage` (Окуучулар/Мектептер жана мезгил `Tabs`, облус/мектеп/класс фильтрлери URL'де, `LeaderboardTable` — өз сабы белгиленет, баракта жок болсо `tfoot`та «Сиздин ордуңуз»), `pages/Profile/` (`ProfileView` — жалпы; `ProfilePage` `/profile` + `ProfileSettings` (аты, облус/мектеп, класс, жашыруу которгучу); `PublicProfilePage` `/u/:id`), `pages/Home/Dashboard` (кирген колдонуучуга `HomePage` ушуну көрсөтөт). Компоненттер: `Tabs`, `LevelBadge`, `LevelProgress`, `StreakFlame`, `LeaderboardTable`, `ActivityCalendar` (CSS grid, `--heat-0..4`), `StatsCharts` (`SolvedBarChart` — Recharts, бир серия, легендасыз, түз белгилер, tooltip, жашыруун таблица), `AchievementGrid`.
+- Графиктердин түстөрү dataviz валидатору менен текшерилди: `--chart-bar` жарык `#1d5bd8` (PASS), караңгы `#4f8cff` (`#6ea0ff` lightness band'дан өтпөдү); heatmap — бир түстүү көк шкала, ар бир тема үчүн өзүнчө кадамдар.
+- Орусча көптүк сандардан качуу үчүн «Табылды: N», «Серия: N дн.» сыяктуу формат колдонулат (i18n:check ky/ru ачкычтарынын бирдейлигин талап кылат).
+
+### Тесттер (`backend/tests/`, 76 тест)
+
+- `integration/rating.test.ts` (10) — тең орундар, мугалим/0 упай кирбейт, жашыруун ысымдар, `me` баракта жок болсо да, класс фильтри, жума рейтинги (эски упайлар кирбейт), мектептердин суммасы, профилде `@` жок, жашыруун профиль 403/ээсине 200, daily автоматтык жана туруктуу, dashboard.
+- `streak.test.ts` — жума/ай чектери Бишкек боюнча.
 
 - `answerChecker.test.ts`, `streak.test.ts` (Бишкек убакыт алкагы, ай/жыл чеги) — 17.
 - `integration/problems.test.ts` (10) — **`correctAnswer`/`tolerance` эч бир жоопто жок** (бардык ачкычтарды рекурсивдүү текшерет), DRAFT жана келе жаткан жарыштын маселелери жашырылган (404), фильтр/издөө/иреттөө/пагинация, упай (биринчи аракет 22), кайра чечүүдө 0, деңгээл/streak/`first-solve`, кеңеш ×0.5, чечим кулпусу жана упайдан ажыратуу, `3,145` DECIMAL, күнүмдүк бонус, 401 жана 5/мүн лимит, окшош маселелер, предметтер.
@@ -192,9 +205,13 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 Жасалды: «Маселелер, жооп, упай (3-этап)» бөлүмүндөгүнүн баары. Текшерилди: 65 тест (21 интеграциялык), eslint, tsc, `vite build`, `i18n:check` (206 ачкыч), KaTeX strict (540 формула).
 Белгиленди: frontend бандлы 650 kB (KaTeX) — 8-этапта lazy routes менен бөлүү.
 
-### ⏭ 4–8-этаптар
+### ✅ 4-этап — Рейтинг, профиль, күнүмдүк маселе, жетишкендиктер, dashboard (2026-10-22)
 
-4: рейтинг, профиль, күнүмдүк маселе, жетишкендиктер. 5: мугалим бөлүмү. 6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
+Жасалды: «Рейтинг, профиль, күнүмдүк маселе (4-этап)» бөлүмүндөгүнүн баары. Текшерилди: 76 тест (31 интеграциялык), eslint, tsc, build, `i18n:check` (273 ачкыч), графиктердин түстөрү валидатор менен.
+
+### ⏭ 5–8-этаптар
+
+5: мугалим бөлүмү. 6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
 
 ## Колдонуучуга берилген суроолор / божомолдор (жооп күтүлүүдө)
 

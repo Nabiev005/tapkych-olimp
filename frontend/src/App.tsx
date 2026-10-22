@@ -8,9 +8,11 @@ import { RegisterPage } from './pages/Auth/RegisterPage';
 import { ResetPasswordPage } from './pages/Auth/ResetPasswordPage';
 import { ComingSoonPage } from './pages/ComingSoon/ComingSoonPage';
 import { HomePage } from './pages/Home/HomePage';
+import { LeaderboardPage } from './pages/Leaderboard/LeaderboardPage';
 import { NotFoundPage } from './pages/NotFound/NotFoundPage';
 import { ProblemPage } from './pages/Problem/ProblemPage';
 import { ProblemsPage } from './pages/Problems/ProblemsPage';
+import { ProfilePage, PublicProfilePage } from './pages/Profile/ProfilePage';
 
 // Sections from later stages show a placeholder for now.
 const router = createBrowserRouter([
@@ -20,13 +22,15 @@ const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/problems', element: <ProblemsPage /> },
       { path: '/problems/:slug', element: <ProblemPage /> },
-      { path: '/leaderboard', element: <ComingSoonPage /> },
+      { path: '/leaderboard', element: <LeaderboardPage /> },
+      { path: '/u/:id', element: <PublicProfilePage /> },
       { path: '/contests', element: <ComingSoonPage /> },
+      { path: '/contests/:id', element: <ComingSoonPage /> },
       {
         path: '/profile',
         element: (
           <RequireAuth>
-            <ComingSoonPage />
+            <ProfilePage />
           </RequireAuth>
         ),
       },

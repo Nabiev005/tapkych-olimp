@@ -12,6 +12,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { TAPKYCH_ORDO_URL } from '../../components/layout/Footer';
 import { ButtonLink } from '../../components/ui/Button';
+import { useAuth } from '../../hooks/useAuth';
+import { Dashboard } from './Dashboard';
 import './HomePage.css';
 
 const SUBJECTS = [
@@ -27,8 +29,13 @@ const FEATURES = [
   { key: 'teachers', icon: GraduationCap },
 ] as const;
 
-/** Landing page for guests. The signed-in dashboard comes in stage 4. */
+/** Signed-in users get their dashboard; guests see the landing page. */
 export function HomePage() {
+  const { status } = useAuth();
+  return status === 'authenticated' ? <Dashboard /> : <Landing />;
+}
+
+function Landing() {
   const { t } = useTranslation();
 
   return (

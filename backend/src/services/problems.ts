@@ -228,3 +228,15 @@ export async function listTopics(subjectSlug: string) {
   if (!subject) throw AppError.notFound();
   return subject.topics;
 }
+
+/** Card DTOs (with the user's status) for already-selected rows */
+export async function toProblemCards(
+  rows: ProblemCardRow[],
+  userId?: string,
+): Promise<ProblemCard[]> {
+  const progress = await progressMap(
+    userId,
+    rows.map((r) => r.id),
+  );
+  return rows.map((r) => toCard(r, progress.get(r.id)));
+}

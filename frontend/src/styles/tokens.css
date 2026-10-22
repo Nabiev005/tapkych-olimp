@@ -97,6 +97,14 @@
   --color-header-hover: #eef3fc;
   --color-hero-from: #1d5bd8;
   --color-hero-to: #0f2f6e;
+  /* Charts: single-series bars and the activity heatmap (sequential blue, validated) */
+  --chart-bar: #1d5bd8;
+  --chart-grid: #e6ecf6;
+  --heat-0: #eef3fc;
+  --heat-1: #c3d7fd;
+  --heat-2: #86aefa;
+  --heat-3: #3b7bf0;
+  --heat-4: #1a4fb8;
   --shadow-sm: 0 1px 2px rgb(15 47 110 / 0.06), 0 1px 3px rgb(15 47 110 / 0.07);
   --shadow-md: 0 4px 14px rgb(15 47 110 / 0.08), 0 2px 4px rgb(15 47 110 / 0.05);
   --shadow-lg: 0 18px 40px rgb(15 47 110 / 0.14);
@@ -137,6 +145,13 @@
     --color-header-hover: #16233f;
     --color-hero-from: #143c8c;
     --color-hero-to: #0a1f4d;
+    --chart-bar: #4f8cff;
+    --chart-grid: #1c2c4d;
+    --heat-0: #16233f;
+    --heat-1: #1e3a75;
+    --heat-2: #2a5bb8;
+    --heat-3: #4f8cff;
+    --heat-4: #a4c4ff;
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
     --shadow-md: 0 4px 14px rgb(0 0 0 / 0.35);
     --shadow-lg: 0 18px 40px rgb(0 0 0 / 0.45);
@@ -176,6 +191,13 @@
   --color-header-hover: #16233f;
   --color-hero-from: #143c8c;
   --color-hero-to: #0a1f4d;
+  --chart-bar: #4f8cff;
+  --chart-grid: #1c2c4d;
+  --heat-0: #16233f;
+  --heat-1: #1e3a75;
+  --heat-2: #2a5bb8;
+  --heat-3: #4f8cff;
+  --heat-4: #a4c4ff;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 0.35);
   --shadow-lg: 0 18px 40px rgb(0 0 0 / 0.45);

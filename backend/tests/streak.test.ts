@@ -63,3 +63,23 @@ describe('effectiveStreak', () => {
     expect(effectiveStreak(5, null, now)).toBe(0);
   });
 });
+
+describe('Bishkek week / month boundaries', () => {
+  it('week starts on Monday 00:00 Bishkek (= Sunday 18:00 UTC)', async () => {
+    const { startOfBishkekWeek, startOfBishkekMonth } = await import('../src/utils/dateRange.js');
+    // Wednesday 2026-10-21 10:00 UTC
+    expect(startOfBishkekWeek(at('2026-10-21T10:00:00Z')).toISOString()).toBe(
+      '2026-10-18T18:00:00.000Z',
+    );
+    // Sunday 2026-10-25 19:00 UTC is already Monday in Bishkek
+    expect(startOfBishkekWeek(at('2026-10-25T19:00:00Z')).toISOString()).toBe(
+      '2026-10-25T18:00:00.000Z',
+    );
+    expect(startOfBishkekMonth(at('2026-10-31T18:30:00Z')).toISOString()).toBe(
+      '2026-10-31T18:00:00.000Z',
+    );
+    expect(startOfBishkekMonth(at('2026-10-15T00:00:00Z')).toISOString()).toBe(
+      '2026-09-30T18:00:00.000Z',
+    );
+  });
+});

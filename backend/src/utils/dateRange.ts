@@ -31,3 +31,24 @@ export function addDays(day: string, amount: number): string {
   d.setUTCDate(d.getUTCDate() + amount);
   return d.toISOString().slice(0, 10);
 }
+
+/** Bishkek is UTC+6 all year (no DST since 2005) */
+const BISHKEK_OFFSET = '+06:00';
+
+/** Instant of Bishkek midnight for a "YYYY-MM-DD" day */
+export function bishkekMidnight(day: string): Date {
+  return new Date(`${day}T00:00:00${BISHKEK_OFFSET}`);
+}
+
+/** Start of the current Bishkek week (Monday 00:00) */
+export function startOfBishkekWeek(now: Date = new Date()): Date {
+  const today = bishkekDay(now);
+  const weekday = new Date(`${today}T00:00:00Z`).getUTCDay(); // 0 = Sunday
+  const sinceMonday = (weekday + 6) % 7;
+  return bishkekMidnight(addDays(today, -sinceMonday));
+}
+
+/** Start of the current Bishkek month (1st, 00:00) */
+export function startOfBishkekMonth(now: Date = new Date()): Date {
+  return bishkekMidnight(`${bishkekDay(now).slice(0, 8)}01`);
+}

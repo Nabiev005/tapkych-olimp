@@ -18,7 +18,8 @@ export type ErrorCode =
   | 'INVALID_RESET_TOKEN'
   | 'SCHOOL_NOT_IN_REGION'
   | 'NO_HINT'
-  | 'SOLUTION_LOCKED';
+  | 'SOLUTION_LOCKED'
+  | 'PROFILE_PRIVATE';
 
 /** Error with a stable code; the message is translated by errorHandler via req.lang. */
 export class AppError extends Error {
