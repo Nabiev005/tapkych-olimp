@@ -275,6 +275,10 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 Долбоор `tapkych-olimp` колдонуучунун Vercel аккаунтунда, https://tapkych-olimp.vercel.app иштейт (Neon менен). Env өзгөрмөлөрү `.env.vercel` файлынан (gitignored, локалдык) коюлду. Табылган көйгөйлөр: (1) env жок болгондо функция кулачу → `api/index.mjs` эми `STARTUP_FAILED` JSON (өзгөрмөлөрдүн аттары гана) кайтарат; (2) `NODE_ENV=production` болгондо npm devDependencies'ти орнотпой, build 2-код менен кулады → `vercel.json` `installCommand: npm install --include=dev`. Калганы: `olimp.tapkych.com` доменин туташтыруу, продакшнда демо аккаунттарды өчүрүү (колдонуучунун чечими).
 
+### ✅ SEO жана Google (2026-10-27)
+
+Домен `olimp.tapkych.com` туташты (колдонуучу жасады). `index.html`: Google Search Console текшерүү тегин (`google-site-verification`), аталыш/сүрөттөмө («Тапкыч Олимп (Тапкыч олимпиада)»), canonical, Open Graph, JSON-LD `WebSite` (`alternateName`: «Тапкыч олимпиада», «Tapkych Olimp»…), `<noscript>`, Golos 800 салмагы. `public/robots.txt` (жеке барактар жабык). Динамикалык `/sitemap.xml` (`services/sitemap.ts`, 1 саат кэш; статикалык барактар + көрүнгөн маселелер + коомдук жарыштар; Express'те `/sitemap.xml` жана `/api/sitemap.xml`, `vercel.json` rewrite `/sitemap.xml → /api`). `hooks/useDocumentTitle.ts` — ар бир баракка `<title>` жана canonical. Продакшнда текшерилди (36 URL).
+
 ### ⏭ 8-этап
 
 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
