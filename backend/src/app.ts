@@ -7,6 +7,7 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { language } from './middleware/language.js';
 import { createApiLimiter } from './middleware/rateLimit.js';
 import { createApiRouter } from './routes/index.js';
+import { getSitemap } from './services/sitemap.js';
 import { AppError } from './utils/errors.js';
 
 export function createApp() {
@@ -30,6 +31,13 @@ export function createApp() {
   app.use(express.json({ limit: '1mb' }));
   app.use(cookieParser());
 
+  // Vercel rewrites /sitemap.xml to the function with the original path
+  app.get(['/sitemap.xml', '/api/sitemap.xml'], async (_req, res) => {
+    res
+      .type('application/xml')
+      .set('Cache-Control', 'public, max-age=3600')
+      .send(await getSitemap());
+  });
   app.use('/api', createApiLimiter(), createApiRouter());
   app.use(notFoundHandler);
   app.use(errorHandler);

@@ -16,6 +16,7 @@ import { ButtonLink } from '../../components/ui/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { Dashboard } from './Dashboard';
 import './HomePage.css';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const SUBJECTS = [
   { key: 'math', icon: Sigma },
@@ -33,6 +34,7 @@ const FEATURES = [
 /** Signed-in users get their dashboard; guests see the landing page. */
 export function HomePage() {
   const { status } = useAuth();
+  useDocumentTitle(null);
   return status === 'authenticated' ? <Dashboard /> : <Landing />;
 }
 

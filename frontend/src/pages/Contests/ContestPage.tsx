@@ -19,6 +19,7 @@ import { formatDateTime } from '../../utils/format';
 import { pickText } from '../../utils/localize';
 import { AnswerForm } from '../Problem/AnswerForm';
 import './Contests.css';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 function ContestProblemCard({
   problem,
@@ -112,6 +113,7 @@ export function ContestPage() {
   const [flash, setFlash] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState<'start' | 'finish' | null>(null);
+  useDocumentTitle(contest ? pickText(contest.titleKy, contest.titleRu, language).text : undefined);
 
   const load = useCallback(async () => {
     try {

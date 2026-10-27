@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /profile
+Disallow: /classes
+Disallow: /propose
+Disallow: /reset-password
+Disallow: /api/
+
+Sitemap: https://olimp.tapkych.com/sitemap.xml

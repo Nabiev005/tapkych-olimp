@@ -26,6 +26,7 @@ import { formatDateTime } from '../../utils/format';
 import { pickName, pickText } from '../../utils/localize';
 import { AnswerForm } from './AnswerForm';
 import './ProblemPage.css';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 type Confirm = 'hint' | 'solution' | null;
 
@@ -60,6 +61,7 @@ function ProblemView({ slug }: { slug: string }) {
   const [confirm, setConfirm] = useState<Confirm>(null);
   const [opening, setOpening] = useState(false);
   const [celebration, setCelebration] = useState<Celebration | null>(null);
+  useDocumentTitle(problem ? pickText(problem.titleKy, problem.titleRu, language).text : undefined);
 
   const load = useCallback(async () => {
     try {

@@ -5,6 +5,7 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api" },
+    { "source": "/sitemap.xml", "destination": "/api" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

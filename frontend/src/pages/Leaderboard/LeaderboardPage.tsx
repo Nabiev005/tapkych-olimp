@@ -19,12 +19,14 @@ import type { Region, School } from '../../services/types';
 import { formatNumber } from '../../utils/format';
 import { pickName } from '../../utils/localize';
 import './LeaderboardPage.css';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 type View = 'students' | 'schools';
 const PAGE_SIZE = 25;
 
 export function LeaderboardPage() {
   const { t } = useTranslation();
+  useDocumentTitle(t('leaderboard.title'));
   const { language } = useLanguage();
   const { user, status: authStatus } = useAuth();
   const [params, setParams] = useSearchParams();

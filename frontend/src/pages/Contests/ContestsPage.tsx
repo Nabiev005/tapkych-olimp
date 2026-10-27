@@ -16,9 +16,11 @@ import { contestsApi, type ContestListItem, type ContestPhase } from '../../serv
 import { formatDateTime } from '../../utils/format';
 import { pickText } from '../../utils/localize';
 import './Contests.css';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export function ContestsPage() {
   const { t } = useTranslation();
+  useDocumentTitle(t('contests.title'));
   const { language } = useLanguage();
   const { status } = useAuth();
   const { can } = usePermissions();

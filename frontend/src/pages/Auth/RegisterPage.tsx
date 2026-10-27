@@ -12,12 +12,14 @@ import { ApiError, errorMessage } from '../../services/api';
 import { geoApi } from '../../services/auth';
 import { localizedName, type Region } from '../../services/types';
 import { AuthCard } from './AuthCard';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const GRADES = [7, 8, 9, 10, 11];
 type FormRole = 'STUDENT' | 'TEACHER';
 
 export function RegisterPage() {
   const { t } = useTranslation();
+  useDocumentTitle(t('auth.register.title'));
   const { language } = useLanguage();
   const { register } = useAuth();
   const navigate = useNavigate();

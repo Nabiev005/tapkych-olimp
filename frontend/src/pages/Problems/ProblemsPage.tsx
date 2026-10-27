@@ -21,6 +21,7 @@ import {
 } from '../../services/problems';
 import { pickName } from '../../utils/localize';
 import './ProblemsPage.css';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 const FILTER_KEYS = [
   'subject',
@@ -36,6 +37,7 @@ const PAGE_SIZE = 12;
 
 export function ProblemsPage() {
   const { t } = useTranslation();
+  useDocumentTitle(t('problems.title'));
   const { language } = useLanguage();
   const { status: authStatus } = useAuth();
   const [params, setParams] = useSearchParams();

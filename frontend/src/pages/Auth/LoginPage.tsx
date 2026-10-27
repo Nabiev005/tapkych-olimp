@@ -8,9 +8,11 @@ import { useAuth } from '../../hooks/useAuth';
 import { ApiError, errorMessage } from '../../services/api';
 import { AuthCard } from './AuthCard';
 import { safeNext } from './safeNext';
+import { useDocumentTitle } from '../../hooks/useDocumentTitle';
 
 export function LoginPage() {
   const { t } = useTranslation();
+  useDocumentTitle(t('auth.login.title'));
   const { login } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
