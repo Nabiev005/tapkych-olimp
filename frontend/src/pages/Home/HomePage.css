@@ -15,6 +15,10 @@
   padding-block: var(--space-12) var(--space-16);
 }
 
+.hero__mark {
+  color: #ffffff;
+}
+
 .hero__badge {
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);

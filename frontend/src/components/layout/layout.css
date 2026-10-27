@@ -55,16 +55,6 @@
   white-space: nowrap;
 }
 
-.brand__mark {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-md);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
 .site-nav {
   display: none;
   gap: var(--space-1);
@@ -244,12 +234,6 @@
   }
 }
 
-@media (max-width: 379px) {
-  .brand__name {
-    font-size: var(--text-base);
-  }
-}
-
 /* ---------- User menu ---------- */
 .user-menu {
   position: relative;
@@ -351,5 +335,53 @@
 @media (min-width: 640px) {
   .user-menu__name {
     display: inline;
+  }
+}
+
+/* ---------- Logo ---------- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo__mark {
+  flex: none;
+  color: var(--color-logo);
+}
+
+.logo__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo__word {
+  color: var(--color-logo);
+  font-size: var(--text-lg);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.logo__word strong {
+  font-weight: 800;
+}
+
+.logo__word span {
+  font-weight: var(--weight-medium);
+}
+
+.logo__tagline {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 379px) {
+  .site-header .logo__word {
+    font-size: var(--text-base);
   }
 }

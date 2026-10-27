@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { TAPKYCH_ORDO_URL } from '../../components/layout/Footer';
+import { LogoMark } from '../../components/layout/Logo';
 import { ButtonLink } from '../../components/ui/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { Dashboard } from './Dashboard';
@@ -42,6 +43,7 @@ function Landing() {
     <div className="home">
       <section className="hero" aria-labelledby="hero-title">
         <div className="container hero__inner">
+          <LogoMark size={72} className="hero__mark" />
           <span className="hero__badge">{t('home.hero.badge')}</span>
           <h1 id="hero-title" className="hero__title">
             {t('home.hero.title')}

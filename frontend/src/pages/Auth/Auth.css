@@ -15,6 +15,10 @@
   max-width: 560px;
 }
 
+.auth-card__logo {
+  margin-bottom: var(--space-5);
+}
+
 .auth-card__title {
   font-size: var(--text-2xl);
 }

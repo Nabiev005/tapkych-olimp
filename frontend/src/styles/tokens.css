@@ -99,6 +99,7 @@
   --color-hero-to: #0f2f6e;
   /* Charts: single-series bars and the activity heatmap (sequential blue, validated) */
   --chart-bar: #1d5bd8;
+  --color-logo: #1c2a6c;
   --chart-grid: #e6ecf6;
   --heat-0: #eef3fc;
   --heat-1: #c3d7fd;
@@ -146,6 +147,7 @@
     --color-hero-from: #143c8c;
     --color-hero-to: #0a1f4d;
     --chart-bar: #4f8cff;
+    --color-logo: #ffffff;
     --chart-grid: #1c2c4d;
     --heat-0: #16233f;
     --heat-1: #1e3a75;
@@ -192,6 +194,7 @@
   --color-hero-from: #143c8c;
   --color-hero-to: #0a1f4d;
   --chart-bar: #4f8cff;
+  --color-logo: #ffffff;
   --chart-grid: #1c2c4d;
   --heat-0: #16233f;
   --heat-1: #1e3a75;

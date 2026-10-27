@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Logo } from '../../components/layout/Logo';
 import './Auth.css';
 
 /** Centered card used by all auth pages */
@@ -16,6 +17,9 @@ export function AuthCard({
   return (
     <div className="container auth-page">
       <div className="card auth-card">
+        <div className="auth-card__logo">
+          <Logo size={44} />
+        </div>
         <h1 className="auth-card__title">{title}</h1>
         {subtitle && <p className="auth-card__subtitle">{subtitle}</p>}
         {children}

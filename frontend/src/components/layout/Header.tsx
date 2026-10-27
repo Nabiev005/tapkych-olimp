@@ -1,9 +1,9 @@
-import { Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { ButtonLink } from '../ui/Button';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { Logo } from './Logo';
 import { NAV_ITEMS } from './navItems';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { UserMenu } from './UserMenu';
@@ -15,11 +15,8 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="container site-header__inner">
-        <Link to="/" className="brand">
-          <span className="brand__mark" aria-hidden="true">
-            <Star size={18} fill="currentColor" />
-          </span>
-          <span className="brand__name">{t('common.appName')}</span>
+        <Link to="/" className="brand" aria-label={t('common.appName')}>
+          <Logo size={34} />
         </Link>
 
         <nav className="site-nav" aria-label={t('common.nav.main')}>
