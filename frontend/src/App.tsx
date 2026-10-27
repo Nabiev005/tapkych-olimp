@@ -1,5 +1,13 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
+import { AdminDaily } from './pages/Admin/AdminDaily';
+import { AdminImport } from './pages/Admin/AdminImport';
+import { AdminLayout } from './pages/Admin/AdminLayout';
+import { AdminOverview } from './pages/Admin/AdminOverview';
+import { AdminProblemEdit } from './pages/Admin/AdminProblemEdit';
+import { AdminProblems, AdminProposals } from './pages/Admin/AdminProblems';
+import { AdminTaxonomy } from './pages/Admin/AdminTaxonomy';
+import { AdminUsers } from './pages/Admin/AdminUsers';
 import { GuestOnly, RequireAuth } from './components/layout/RouteGuards';
 import { AuthProvider } from './hooks/AuthProvider';
 import { ForgotPasswordPage } from './pages/Auth/ForgotPasswordPage';
@@ -90,6 +98,25 @@ const router = createBrowserRouter([
             <ProposePage />
           </RequireAuth>
         ),
+      },
+      {
+        path: '/admin',
+        element: (
+          <RequireAuth permission="admin:stats">
+            <AdminLayout />
+          </RequireAuth>
+        ),
+        children: [
+          { index: true, element: <AdminOverview /> },
+          { path: 'problems', element: <AdminProblems /> },
+          { path: 'problems/new', element: <AdminProblemEdit /> },
+          { path: 'problems/:id', element: <AdminProblemEdit /> },
+          { path: 'proposals', element: <AdminProposals /> },
+          { path: 'import', element: <AdminImport /> },
+          { path: 'users', element: <AdminUsers /> },
+          { path: 'taxonomy', element: <AdminTaxonomy /> },
+          { path: 'daily', element: <AdminDaily /> },
+        ],
       },
       {
         path: '/login',

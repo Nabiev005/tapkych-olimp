@@ -29,7 +29,9 @@ export type ErrorCode =
   | 'CONTEST_FINISHED'
   | 'CONTEST_NOT_JOINED'
   | 'CONTEST_TIME_OVER'
-  | 'RESULTS_NOT_READY';
+  | 'RESULTS_NOT_READY'
+  | 'SLUG_TAKEN'
+  | 'CANNOT_CHANGE_SELF';
 
 /** Error with a stable code; the message is translated by errorHandler via req.lang. */
 export class AppError extends Error {

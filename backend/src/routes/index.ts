@@ -7,6 +7,7 @@ import * as rating from '../controllers/rating.js';
 import { optionalAuth, requireAuth } from '../middleware/auth.js';
 import { requirePermission } from '../middleware/requireRole.js';
 import { sendData } from '../utils/response.js';
+import { createAdminRouter } from './admin.js';
 import { createAuthRouter } from './auth.js';
 import { createClassesRouter } from './classes.js';
 import { createContestsRouter } from './contests.js';
@@ -40,6 +41,7 @@ export function createApiRouter(): Router {
 
   router.use('/classes', createClassesRouter());
   router.use('/contests', createContestsRouter());
+  router.use('/admin', createAdminRouter());
   router.get('/proposals', requirePermission('problems:propose'), classes.listMyProposals);
   router.post('/proposals', requirePermission('problems:propose'), classes.createProposal);
 

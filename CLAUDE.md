@@ -185,7 +185,24 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - Маршруттар: `GET/POST /api/contests`, `GET /api/contests/:id`, `GET …/results`, `POST …/register|start|submit|finish` (`contests:participate`; submit — `createContestSubmitLimiter` 20/мүн).
 - Frontend: `pages/Contests/` (`ContestsPage` — Жүрүүдө/Келе жаткан/Бүткөн өтмөктөрү; `ContestPage` — тескери санак, катталуу, баштоо/аяктоо ырастоо модалдары, жабышкак таймер, маселелер + `AnswerForm` (`initialValue`, `submitLabel`), сакталган жооп; `ContestResultsPage`; `NewContestPage` — `?classId=` болсо класстык). `components/olimp/Timer.tsx` (`utils/duration.ts`), `components/olimp/ProblemPicker.tsx` (тапшырма жана жарыш үчүн жалпы, `renderExtra` — упай талаасы). Класс барагында «Класстык жарыш» баскычы.
 
-### Тесттер (`backend/tests/`, 100 тест)
+### Логотип (2026-10-27, колдонуучу берген брендбук боюнча)
+
+- `components/layout/Logo.tsx`: `LogoMark` — SVG (тоо `currentColor`, алтын чоку жана 4 бурчтуу жылдыз `#F0A81C`, негиз сызыгы), `Logo` — белги + «**Тапкыч** Олимп» (биринчи сөз жоон, Golos Text), `stacked`, `tagline` («Олимпиадага даярдык», `common.logoTagline`). Түсү `--color-logo`: жарык темада бренддин кочкул көгү `#1c2a6c`, караңгыда ак.
+- Колдонулган жерлер: header, footer, кирүү/каттоо карточкалары (`AuthCard`), башкы беттин hero'су (ак белги). `public/favicon.svg` — кочкул көк тегерек бурчтуу фондо ак тоо. `theme-color` = `#1c2a6c`.
+- Колдонуучу логотипти сүрөт (скриншот) катары берген, ошондуктан белги SVG катары кайра чийилди. PNG иконкалар (apple-touch-icon ж.б.) 8-этапта керек болсо кошулат.
+
+### Админ панели (7-этап)
+
+- `/api/admin/*` (`routes/admin.ts`, ар бир маршрутка өз укугу): `stats`, `problems` (тизме/фильтр/`proposals=true` — мугалимдердин DRAFT сунуштары), `problems/:id` (**`correctAnswer` ушул админ маршруттарында гана кайтат** — редактор үчүн), `POST/PUT problems` (`problemInputSchema` + `problemMetaSchema` {slug, status}; `SLUG_TAKEN`), `problems/:id/status` (+ `reviewNote` — мугалим көрөт), `problems/check-answer` (редактордогу «тест жооп»), `problems/import` (`dryRun`, ар бир элемент өзүнчө текшерилет, slug боюнча upsert, каталар которулган), `users` (издөө, роль, бөгөттөө — сессиялар жабылат; өзүн өзгөртө албайт `CANNOT_CHANGE_SELF`), `taxonomy`/`subjects`/`topics`/`schools`, `daily` (GET жүгүртмө, PUT — админ тандоосу автоматтыкты алмаштырат).
+- `services/adminProblems.ts`, `services/admin.ts` (статистика: ролдор, 7 күндө жаңылар, статустар, сунуштар, 14 күндүк активдүүлүк Бишкек күндөрү боюнча (бош күндөр 0), эң көп чечилген, эң кыйын (`attemptCount ≥ 3`)).
+- CLI: `npm run problems:import -w backend -- --file … [--dry-run] [--status …] [--author …]` (`scripts/import-problems.ts`). Формат: `docs/problem-format.md`, мисал `docs/problems.example.json` (4 жооп түрү).
+- Frontend `/admin` (`RequireAuth permission="admin:stats"`, ичке маршруттар): `AdminLayout` (өтмөк навигация), `AdminOverview` (стат плиткалар + 14 күндүк бар график), `AdminProblems` / `AdminProposals`, `AdminProblemEdit` (`ProblemForm` кайра колдонулат, slug/статус, тест жооп, сунушту комментарий менен четке кагуу), `AdminImport` (файл же текст, текшерүү/импорт, отчет), `AdminUsers`, `AdminTaxonomy`, `AdminDaily`. UserMenu'да «Админ панели». `SolvedBarChart` эми `formatValue`, `height` кабыл алат.
+
+### Тесттер (`backend/tests/`, 108 тест)
+
+- `integration/admin.test.ts` (8) — окуучу/мугалимге 403, түзүү/түзөтүү/жарыялоо (каталогдо `correctAnswer` жок), SLUG_TAKEN, сунуштарды карап чыгуу (четке кагуу + комментарий → мугалим көрөт, бекитүү), check-answer, импорт (dry run, ар бир элементтин катасы, upsert, мугалимге 403), колдонуучулар (роль, бөгөттөө, өзүн эмес), предмет/тема/мектеп, daily + статистика.
+
+### Тесттер (мурунку этаптар)
 
 - `contestScoring.test.ts` (5), `integration/contests.test.ts` (8) — upcoming (каттоо, маселелер жашыруун, start четке кагылат), коомдук жарыш маселелерди каталогдон жашырат/бүткөндөн кийин ачат, жашыруун жыйынтыктар (акыркы жооп, `correctAnswer` жок, results бүткөнгө чейин 403, finish → TIME_OVER), көрсөтүлгөн жыйынтыктар, жеке мөөнөт өткөндө, бөтөн маселе 404, иреттелген жыйынтыктар + анонимдүүлүк, класстык жарыштын көрүнүшү, түзүү укуктары жана терезе валидациясы.
 
@@ -244,9 +261,15 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 Жасалды: «Онлайн жарыштар (6-этап)» бөлүмүндөгүнүн баары, анын ичинде класстык жарыш. Текшерилди: 100 тест (47 интеграциялык), eslint, tsc, build, `i18n:check` (463 ачкыч).
 
-### ⏭ 7–8-этаптар
+### ✅ Логотип жайгаштырылды (2026-10-27)
 
-7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
+### ✅ 7-этап — Админ панели, импорт (2026-10-27)
+
+Жасалды: «Админ панели (7-этап)» бөлүмүндөгүнүн баары. Текшерилди: 108 тест (55 интеграциялык), eslint, tsc, build, `i18n:check` (568 ачкыч), CLI импорт (dry run) тест базасында.
+
+### ⏭ 8-этап
+
+8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
 
 ## Колдонуучуга берилген суроолор / божомолдор (жооп күтүлүүдө)
 

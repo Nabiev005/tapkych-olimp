@@ -1,0 +1,73 @@
+{
+  "problems": [
+    {
+      "slug": "example-sum-of-angles",
+      "status": "DRAFT",
+      "subjectSlug": "math",
+      "topicSlug": "geometry",
+      "titleKy": "Үч бурчтуктун бурчтары",
+      "titleRu": "Углы треугольника",
+      "statementKy": "Үч бурчтуктун эки бурчу $50^\\circ$ жана $60^\\circ$ге барабар. Үчүнчү бурчун (градус менен) табыңыз.",
+      "statementRu": "Два угла треугольника равны $50^\\circ$ и $60^\\circ$. Найдите третий угол (в градусах).",
+      "answerType": "INTEGER",
+      "correctAnswer": "70",
+      "hintKy": "Үч бурчтуктун бурчтарынын суммасы $180^\\circ$.",
+      "hintRu": "Сумма углов треугольника равна $180^\\circ$.",
+      "solutionKy": "$180^\\circ - 50^\\circ - 60^\\circ = 70^\\circ$.",
+      "solutionRu": "$180^\\circ - 50^\\circ - 60^\\circ = 70^\\circ$.",
+      "difficulty": 1,
+      "olympiadLevel": "SCHOOL",
+      "gradeFrom": 7,
+      "gradeTo": 8,
+      "points": 10,
+      "source": "Тапкыч Олимп — мисал"
+    },
+    {
+      "subjectSlug": "physics",
+      "topicSlug": "kinematics",
+      "titleKy": "Орточо ылдамдык",
+      "statementKy": "Велосипедчи $30$ км жолду $1{,}5$ саатта басып өттү. Анын орточо ылдамдыгын (км/саат) табыңыз.",
+      "answerType": "DECIMAL",
+      "correctAnswer": "20",
+      "tolerance": 0.01,
+      "solutionKy": "$v = \\dfrac{30}{1{,}5} = 20$ км/саат.",
+      "difficulty": 1,
+      "olympiadLevel": "SCHOOL",
+      "gradeFrom": 7,
+      "gradeTo": 8
+    },
+    {
+      "subjectSlug": "informatics",
+      "topicSlug": "logic",
+      "titleKy": "Логикалык туюнтма",
+      "titleRu": "Логическое выражение",
+      "statementKy": "$A = 1$, $B = 0$ болсо, $A \\land \\lnot B$ туюнтмасынын мааниси кандай?",
+      "statementRu": "Чему равно значение выражения $A \\land \\lnot B$ при $A = 1$, $B = 0$?",
+      "answerType": "MULTIPLE_CHOICE",
+      "correctAnswer": "b",
+      "choices": [
+        { "id": "a", "textKy": "$0$", "textRu": "$0$" },
+        { "id": "b", "textKy": "$1$", "textRu": "$1$" }
+      ],
+      "solutionKy": "$\\lnot B = 1$, демек $1 \\land 1 = 1$.",
+      "solutionRu": "$\\lnot B = 1$, значит $1 \\land 1 = 1$.",
+      "difficulty": 1,
+      "olympiadLevel": "SCHOOL",
+      "gradeFrom": 7,
+      "gradeTo": 9
+    },
+    {
+      "subjectSlug": "informatics",
+      "topicSlug": "number-systems",
+      "titleKy": "Сегиздик система",
+      "statementKy": "$15_{10}$ санын сегиздик системада жазыңыз.",
+      "answerType": "TEXT",
+      "correctAnswer": ["17", "17_8"],
+      "solutionKy": "$15 = 1 \\cdot 8 + 7$, демек $17_8$.",
+      "difficulty": 2,
+      "olympiadLevel": "SCHOOL",
+      "gradeFrom": 7,
+      "gradeTo": 9
+    }
+  ]
+}

@@ -18,7 +18,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "admin:create": "tsx scripts/create-admin.ts",
-    "demo:remove": "tsx scripts/remove-demo-users.ts"
+    "demo:remove": "tsx scripts/remove-demo-users.ts",
+    "problems:import": "tsx scripts/import-problems.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

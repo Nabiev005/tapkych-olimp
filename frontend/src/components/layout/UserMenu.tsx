@@ -1,4 +1,4 @@
-import { ChevronDown, FilePlus2, LogOut, UserRound, Users } from 'lucide-react';
+import { ChevronDown, FilePlus2, LogOut, Shield, UserRound, Users } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
@@ -86,6 +86,17 @@ export function UserMenu() {
             <Users size={18} aria-hidden="true" />
             {t('auth.menu.classes')}
           </Link>
+          {can('admin:stats') && (
+            <Link
+              to="/admin"
+              role="menuitem"
+              className="user-menu__item"
+              onClick={() => setOpen(false)}
+            >
+              <Shield size={18} aria-hidden="true" />
+              {t('auth.menu.admin')}
+            </Link>
+          )}
           {can('problems:propose') && (
             <Link
               to="/propose"
