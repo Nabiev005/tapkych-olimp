@@ -22,6 +22,12 @@ export const createApiLimiter = () => createLimiter(60 * 1000, 300);
 /** Strict limit for register / login / password reset */
 export const createAuthLimiter = () => createLimiter(15 * 60 * 1000, 20);
 
+/** Contest answers: 20 per minute per user per contest */
+export const createContestSubmitLimiter = () =>
+  createLimiter(60 * 1000, 20, {
+    keyGenerator: (req) => `${req.user?.id ?? 'guest'}:contest:${String(req.params.id)}`,
+  });
+
 /** Answer submissions: 5 per minute per user per problem (7.3 / 8.3) */
 export const createSubmitLimiter = () =>
   createLimiter(60 * 1000, 5, {

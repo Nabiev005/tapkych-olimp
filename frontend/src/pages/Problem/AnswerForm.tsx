@@ -11,13 +11,24 @@ interface AnswerFormProps {
   choices: Choice[] | null;
   submitting: boolean;
   onSubmit: (answer: string) => void;
+  /** Pre-filled answer (e.g. the last saved contest answer) */
+  initialValue?: string;
+  /** Button text (defaults to "Check") */
+  submitLabel?: string;
 }
 
 /** Answer input matching the answer type: integer, decimal, text or choices. */
-export function AnswerForm({ answerType, choices, submitting, onSubmit }: AnswerFormProps) {
+export function AnswerForm({
+  answerType,
+  choices,
+  submitting,
+  onSubmit,
+  initialValue = '',
+  submitLabel,
+}: AnswerFormProps) {
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialValue);
   const id = useId();
 
   const handleSubmit = (event: FormEvent) => {
@@ -50,7 +61,7 @@ export function AnswerForm({ answerType, choices, submitting, onSubmit }: Answer
           })}
         </fieldset>
         <Button type="submit" size="lg" loading={submitting} disabled={!value}>
-          {t('problems.problem.check')}
+          {submitLabel ?? t('problems.problem.check')}
         </Button>
       </form>
     );
@@ -80,7 +91,7 @@ export function AnswerForm({ answerType, choices, submitting, onSubmit }: Answer
           {...inputProps}
         />
         <Button type="submit" size="lg" loading={submitting} disabled={!value.trim()}>
-          {t('problems.problem.check')}
+          {submitLabel ?? t('problems.problem.check')}
         </Button>
       </div>
     </form>

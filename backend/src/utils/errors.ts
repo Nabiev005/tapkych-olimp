@@ -24,7 +24,12 @@ export type ErrorCode =
   | 'OWN_CLASS'
   | 'PROBLEMS_UNAVAILABLE'
   | 'UNKNOWN_TOPIC'
-  | 'WRONG_PASSWORD';
+  | 'WRONG_PASSWORD'
+  | 'CONTEST_NOT_STARTED'
+  | 'CONTEST_FINISHED'
+  | 'CONTEST_NOT_JOINED'
+  | 'CONTEST_TIME_OVER'
+  | 'RESULTS_NOT_READY';
 
 /** Error with a stable code; the message is translated by errorHandler via req.lang. */
 export class AppError extends Error {

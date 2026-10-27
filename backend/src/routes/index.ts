@@ -9,6 +9,7 @@ import { requirePermission } from '../middleware/requireRole.js';
 import { sendData } from '../utils/response.js';
 import { createAuthRouter } from './auth.js';
 import { createClassesRouter } from './classes.js';
+import { createContestsRouter } from './contests.js';
 import { createProblemsRouter } from './problems.js';
 
 // All API routes are mounted under /api in app.ts.
@@ -38,6 +39,7 @@ export function createApiRouter(): Router {
   router.get('/users/:id', optionalAuth, rating.publicProfile);
 
   router.use('/classes', createClassesRouter());
+  router.use('/contests', createContestsRouter());
   router.get('/proposals', requirePermission('problems:propose'), classes.listMyProposals);
   router.post('/proposals', requirePermission('problems:propose'), classes.createProposal);
 

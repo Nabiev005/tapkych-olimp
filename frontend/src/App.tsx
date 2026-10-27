@@ -10,7 +10,10 @@ import { AssignmentPage } from './pages/Classes/AssignmentPage';
 import { ClassesPage } from './pages/Classes/ClassesPage';
 import { ClassPage } from './pages/Classes/ClassPage';
 import { NewAssignmentPage } from './pages/Classes/NewAssignmentPage';
-import { ComingSoonPage } from './pages/ComingSoon/ComingSoonPage';
+import { ContestPage } from './pages/Contests/ContestPage';
+import { ContestResultsPage } from './pages/Contests/ContestResultsPage';
+import { ContestsPage } from './pages/Contests/ContestsPage';
+import { NewContestPage } from './pages/Contests/NewContestPage';
 import { HomePage } from './pages/Home/HomePage';
 import { LeaderboardPage } from './pages/Leaderboard/LeaderboardPage';
 import { NotFoundPage } from './pages/NotFound/NotFoundPage';
@@ -29,8 +32,17 @@ const router = createBrowserRouter([
       { path: '/problems/:slug', element: <ProblemPage /> },
       { path: '/leaderboard', element: <LeaderboardPage /> },
       { path: '/u/:id', element: <PublicProfilePage /> },
-      { path: '/contests', element: <ComingSoonPage /> },
-      { path: '/contests/:id', element: <ComingSoonPage /> },
+      { path: '/contests', element: <ContestsPage /> },
+      {
+        path: '/contests/new',
+        element: (
+          <RequireAuth>
+            <NewContestPage />
+          </RequireAuth>
+        ),
+      },
+      { path: '/contests/:id', element: <ContestPage /> },
+      { path: '/contests/:id/results', element: <ContestResultsPage /> },
       {
         path: '/profile',
         element: (

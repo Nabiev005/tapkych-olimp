@@ -46,11 +46,14 @@ export const problemDetailSelect = {
   solutionRu: true,
 } satisfies Prisma.ProblemSelect;
 
-/** Published problems that are not part of a contest that hasn't ended yet. */
+/**
+ * Published problems that are not part of a public contest that hasn't ended yet.
+ * (Class contests reuse catalog problems, so they don't hide them.)
+ */
 export function visibleProblemWhere(now: Date = new Date()): Prisma.ProblemWhereInput {
   return {
     status: 'PUBLISHED',
-    contestProblems: { none: { contest: { endsAt: { gt: now } } } },
+    contestProblems: { none: { contest: { endsAt: { gt: now }, classId: null } } },
   };
 }
 

@@ -176,7 +176,18 @@ Env: `.env.example` (root) → `backend/.env` катары көчүрүлөт. B
 - Маршруттар: `GET/POST /api/classes`, `POST /api/classes/join`, `GET /api/classes/:id`, `GET /api/classes/:id/stats`, `DELETE /api/classes/:id/members/:userId|me`, `POST /api/classes/:id/assignments`, `GET /api/classes/:id/assignments/:assignmentId`.
 - Frontend: `pages/Classes/` (`ClassesPage` — түзүү + код менен кошулуу + тизмелер; `ClassPage` — код көчүрүү баскычы, тапшырмалар, мүчөлөр таблицасы, чыгаруу/чыгуу модалдары, кыйын маселелер; `NewAssignmentPage` — каталогдон издеп тандоо, тартибин өзгөртүү, мөөнөт; `AssignmentPage` — ✓/✗/— матрицасы), `pages/Propose/ProposePage` (сунуштар тизмеси статустары менен). `components/olimp/ProblemForm.tsx` + `utils/problemForm.ts` (`toProblemPayload`/`fromProblemPayload`) — KY/RU өтмөктөрү, KaTeX алдын ала көрүү, варианттар редактору; админ редакторунда кайра колдонулат. `TextAreaField`. UserMenu: «Класстарым», «Маселе сунуштоо» (`problems:propose`). Dashboard'до тапшырмалар.
 
-### Тесттер (`backend/tests/`, 87 тест)
+### Онлайн жарыштар (6-этап)
+
+- Модель: `startsAt..endsAt` — терезе; катышуучу «Баштоо» баскан убактан `durationMinutes` алат; жеке мөөнөт = `min(startedAt + duration, endsAt)` (`personalDeadline`). Фазалар `upcoming|live|finished` — `contestPhase()`, **сервердин убактысы гана**; API `serverTime` кайтарат, frontend таймери оффсет менен ошого ылайыкташат.
+- Упай (`services/contestScoring.ts`, unit-тесттер): жашыруун жыйынтыктар (демейки) — ар бир маселе боюнча **акыркы жооп** эсептелет, айып жок; `showVerdicts` — **биринчи туура жооп** + айып (мүнөттөр + ар бир туура эмес аракетке 10 мүн). Иреттөө: упай ↓, айып ↑, толук тең болсо бирдей орун. `ContestParticipant.score/penalty` ар бир жоопто кайра эсептелет.
+- `services/contests.ts`: `listContests` (коомдук + көрүүчүнүн класстарынын жарыштары; админ баарын), `getContest` (маселелер — баштагандарга жарыш учурунда, бардыгына бүткөндөн кийин; `correctAnswer` жок; `slug` бүткөндөн кийин гана; `solved` — `showVerdicts` же бүткөндө), `register`, `start` (катталбаса өзү каттайт, кайра басса баштапкы убакыт сакталат), `submit` (`CONTEST_NOT_JOINED`, `CONTEST_TIME_OVER`; `Submission.contestId` менен, каталог упайы берилбейт), `finish` (эрте аяктоо), `results` (бүткөндөн кийин, же ээси/админ ар дайым; жашыруун профилдер анонимдүү), `createContest` (админ — коомдук, PUBLISHED маселелер; мугалим — өз классы үчүн, `visibleProblemWhere` маселелери).
+- `visibleProblemWhere()` эми **коомдук** аяктабаган жарыштардын маселелерин гана жашырат (`classId: null`) — класстык жарыштар каталогдогу маселелерди колдонот.
+- Маршруттар: `GET/POST /api/contests`, `GET /api/contests/:id`, `GET …/results`, `POST …/register|start|submit|finish` (`contests:participate`; submit — `createContestSubmitLimiter` 20/мүн).
+- Frontend: `pages/Contests/` (`ContestsPage` — Жүрүүдө/Келе жаткан/Бүткөн өтмөктөрү; `ContestPage` — тескери санак, катталуу, баштоо/аяктоо ырастоо модалдары, жабышкак таймер, маселелер + `AnswerForm` (`initialValue`, `submitLabel`), сакталган жооп; `ContestResultsPage`; `NewContestPage` — `?classId=` болсо класстык). `components/olimp/Timer.tsx` (`utils/duration.ts`), `components/olimp/ProblemPicker.tsx` (тапшырма жана жарыш үчүн жалпы, `renderExtra` — упай талаасы). Класс барагында «Класстык жарыш» баскычы.
+
+### Тесттер (`backend/tests/`, 100 тест)
+
+- `contestScoring.test.ts` (5), `integration/contests.test.ts` (8) — upcoming (каттоо, маселелер жашыруун, start четке кагылат), коомдук жарыш маселелерди каталогдон жашырат/бүткөндөн кийин ачат, жашыруун жыйынтыктар (акыркы жооп, `correctAnswer` жок, results бүткөнгө чейин 403, finish → TIME_OVER), көрсөтүлгөн жыйынтыктар, жеке мөөнөт өткөндө, бөтөн маселе 404, иреттелген жыйынтыктар + анонимдүүлүк, класстык жарыштын көрүнүшү, түзүү укуктары жана терезе валидациясы.
 
 - `integration/classes.test.ts` (7) — класс түзүү/код, кошулуу (кичине тамга, идемпотенттүү, туура эмес код, өз классы), класс барагынын көрүнүшү (мугалим/мүчө/бөтөн → 404), тапшырма матрицасы + dashboard + статистика, жеткиликсиз маселелер жана бөтөн класс, чыгаруу/чыгуу, сунуштар (DRAFT каталогдо жок, эки тилдеги валидация).
 - `integration/password.test.ts` — пароль өзгөртүү. `slug.test.ts` — транслитерация, join code.
@@ -229,9 +240,13 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 Жасалды: «Мугалимдин бөлүмү (5-этап)» бөлүмүндөгүнүн баары + пароль өзгөртүү + колдонуучунун админ аккаунту. Класстык жарыш 6-этапта. Текшерилди: 87 тест (39 интеграциялык), eslint, tsc, build, `i18n:check` (390 ачкыч).
 
-### ⏭ 6–8-этаптар
+### ✅ 6-этап — Онлайн жарыштар (2026-10-27)
 
-6: онлайн жарыштар. 7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
+Жасалды: «Онлайн жарыштар (6-этап)» бөлүмүндөгүнүн баары, анын ичинде класстык жарыш. Текшерилди: 100 тест (47 интеграциялык), eslint, tsc, build, `i18n:check` (463 ачкыч).
+
+### ⏭ 7–8-этаптар
+
+7: админ панели, JSON импорт (`scripts/import-problems.ts`, `docs/problem-format.md`). 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
 
 ## Колдонуучуга берилген суроолор / божомолдор (жооп күтүлүүдө)
 
@@ -239,5 +254,5 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 1. Тапкыч ордонун дареги `https://tapkych.com` деп алынды — туурабы?
 2. «Подсказка» терминин кыргызча «кеңеш» деп которуу сунушталды — макулбу (же «жардам», «ишарат»)?
-3. Жарыш модели: `startsAt..endsAt` терезе + ар бир катышуучуга `durationMinutes` — туурабы, же баары бир убакта башташы керекпи?
+3. Жарыш модели: `startsAt..endsAt` терезе + ар бир катышуучуга `durationMinutes` — ушундай ишке ашырылды (6-этап). Баары бир убакта башташы керек болсо, `durationMinutes = терезе` коюу жетиштүү.
 4. Демо паролдор (`Admin12345` ж.б.) — макулбу?

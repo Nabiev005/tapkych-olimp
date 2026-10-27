@@ -1,4 +1,4 @@
-import { ArrowLeft, Check, ClipboardList, Copy, Plus, UserMinus } from 'lucide-react';
+import { ArrowLeft, Check, ClipboardList, Copy, Plus, Timer, UserMinus } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -140,10 +140,16 @@ export function ClassPage() {
             {t('classes.assignments')}
           </h2>
           {klass.isTeacher && (
-            <ButtonLink to={`/classes/${klass.id}/assignments/new`} size="sm">
-              <Plus size={16} aria-hidden="true" />
-              {t('classes.newAssignment')}
-            </ButtonLink>
+            <span className="section-head__actions">
+              <ButtonLink to={`/contests/new?classId=${klass.id}`} size="sm" variant="secondary">
+                <Timer size={16} aria-hidden="true" />
+                {t('classes.newContest')}
+              </ButtonLink>
+              <ButtonLink to={`/classes/${klass.id}/assignments/new`} size="sm">
+                <Plus size={16} aria-hidden="true" />
+                {t('classes.newAssignment')}
+              </ButtonLink>
+            </span>
           )}
         </div>
         {klass.assignments.length === 0 ? (
