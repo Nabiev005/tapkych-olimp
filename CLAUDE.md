@@ -267,6 +267,10 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 Жасалды: «Админ панели (7-этап)» бөлүмүндөгүнүн баары. Текшерилди: 108 тест (55 интеграциялык), eslint, tsc, build, `i18n:check` (568 ачкыч), CLI импорт (dry run) тест базасында.
 
+### ✅ Деплойго даярдоо (2026-10-27)
+
+Колдонуучу `olimp.tapkych.com` субдоменине коюуну сурады (`tapkych.com` — анын `tapkych-ordo` Vercel долбоорунда). Чечим: **өзүнчө Vercel долбоору** `tapkych-olimp`, домен `olimp.tapkych.com` (CNAME `olimp → cname.vercel-dns.com`, же Vercel nameserver'лери болсо автоматтык). `DEPLOYMENT.md` жазылды (env тизмеси, CORS_ORIGINS'ке prod жана vercel.app даректери, демо аккаунттарды өчүрүү, бэкап, көйгөйлөр). `api/index.mjs` локалдык симуляцияда текшерилди (prod режими: health, маселелер, кирүү, `Secure` cookie, бөтөн Origin 403). Чыныгы Vercel деплойду колдонуучу өз аккаунтунан жасайт.
+
 ### ⏭ 8-этап
 
 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
