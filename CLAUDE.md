@@ -271,6 +271,10 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 Колдонуучу `olimp.tapkych.com` субдоменине коюуну сурады (`tapkych.com` — анын `tapkych-ordo` Vercel долбоорунда). Чечим: **өзүнчө Vercel долбоору** `tapkych-olimp`, домен `olimp.tapkych.com` (CNAME `olimp → cname.vercel-dns.com`, же Vercel nameserver'лери болсо автоматтык). `DEPLOYMENT.md` жазылды (env тизмеси, CORS_ORIGINS'ке prod жана vercel.app даректери, демо аккаунттарды өчүрүү, бэкап, көйгөйлөр). `api/index.mjs` локалдык симуляцияда текшерилди (prod режими: health, маселелер, кирүү, `Secure` cookie, бөтөн Origin 403). Чыныгы Vercel деплойду колдонуучу өз аккаунтунан жасайт.
 
+### ✅ Vercel'ге чыкты (2026-10-27)
+
+Долбоор `tapkych-olimp` колдонуучунун Vercel аккаунтунда, https://tapkych-olimp.vercel.app иштейт (Neon менен). Env өзгөрмөлөрү `.env.vercel` файлынан (gitignored, локалдык) коюлду. Табылган көйгөйлөр: (1) env жок болгондо функция кулачу → `api/index.mjs` эми `STARTUP_FAILED` JSON (өзгөрмөлөрдүн аттары гана) кайтарат; (2) `NODE_ENV=production` болгондо npm devDependencies'ти орнотпой, build 2-код менен кулады → `vercel.json` `installCommand: npm install --include=dev`. Калганы: `olimp.tapkych.com` доменин туташтыруу, продакшнда демо аккаунттарды өчүрүү (колдонуучунун чечими).
+
 ### ⏭ 8-этап
 
 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.
