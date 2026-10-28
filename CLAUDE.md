@@ -279,6 +279,12 @@ Neon долбоору `tapkych-olimp` (Frankfurt, Postgres 18, бутак `produ
 
 Домен `olimp.tapkych.com` туташты (колдонуучу жасады). `index.html`: Google Search Console текшерүү тегин (`google-site-verification`), аталыш/сүрөттөмө («Тапкыч Олимп (Тапкыч олимпиада)»), canonical, Open Graph, JSON-LD `WebSite` (`alternateName`: «Тапкыч олимпиада», «Tapkych Olimp»…), `<noscript>`, Golos 800 салмагы. `public/robots.txt` (жеке барактар жабык). Динамикалык `/sitemap.xml` (`services/sitemap.ts`, 1 саат кэш; статикалык барактар + көрүнгөн маселелер + коомдук жарыштар; Express'те `/sitemap.xml` жана `/api/sitemap.xml`, `vercel.json` rewrite `/sitemap.xml → /api`). `hooks/useDocumentTitle.ts` — ар бир баракка `<title>` жана canonical. Продакшнда текшерилди (36 URL).
 
+### ✅ Демо аккаунттар өчтү, шилтеме сүрөтү, 43 жаңы маселе (2026-10-28)
+
+- **Демо аккаунттар** продакшндан өчүрүлдү (колдонуучу уруксат берди): `npm run demo:remove -w backend` → 5 колдонуучу (`admin/teacher/student1-3@demo.tapkych.com`) жана демо класс `DEMO8A` (cascade). Маселелер жана `contest-demo-autumn` сакталды (`authorId`/`createdById` → `SetNull`). Продакшнда эми бир гана админ — колдонуучунун аккаунту.
+- **Шилтеме карточкасы жана иконкалар** (`frontend/public/`): `og-image.png` (1200×630, кочкул көк градиент, логотип, «Математика · Физика · Информатика», `olimp.tapkych.com`), `apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (Android үчүн коопсуз аймак), `manifest.webmanifest` (телефондун башкы экранына кошуу). `index.html`: `og:image*`, `twitter:card=summary_large_image`, `apple-touch-icon`, `manifest`. PNG'лер SVG'ден scratchpad'дагы `@resvg/resvg-js` менен чыгарылды (долбоорго кошулган эмес), шрифт — Segoe UI (Golos TTF жүктөлбөдү). Кайра чыгаруу керек болсо — ошол эле SVG белги (`Logo.tsx`/`favicon.svg`).
+- **Маселелер**: `content/problems/batch-01.json` — 43 оригиналдуу маселе (мат. 16, физ. 13, инф. 14; кыйындык 1–4; эки тилде, кеңеш жана чечим менен). Ар бир жооп генератор скриптинде эсептөө менен текшерилди (Дейкстра, рекурсия, толук санап чыгуу ж.б.), 706 формула KaTeX strict режиминде катасыз, seed slug'тары менен кагылышуу жок. Продакшнга `--status PUBLISHED` менен импорттолду → каталогдо **73 маселе**. README'де «Кошумча маселелер» бөлүмү.
+
 ### ⏭ 8-этап
 
 8: тесттер, оптималдаштыруу, мобилдик текшерүү, `DEPLOYMENT.md`, Vercel.

@@ -1,0 +1,21 @@
+{
+  "name": "Тапкыч Олимп",
+  "short_name": "Тапкыч Олимп",
+  "description": "Математика, физика жана информатика боюнча олимпиадага даярдоо платформасы",
+  "lang": "ky",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f8fd",
+  "theme_color": "#1c2a6c",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

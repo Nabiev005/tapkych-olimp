@@ -61,7 +61,7 @@ TEST_DATABASE_URL=postgresql://... npm test
 
 ## Демо аккаунттар
 
-Seed `SEED_DEMO_USERS=false` болбосо түзүлөт. **Продакшнда `npm run demo:remove -w backend` менен өчүрүңүз.**
+Seed `SEED_DEMO_USERS=false` болбосо түзүлөт. **Продакшнда `npm run demo:remove -w backend` менен өчүрүңүз.** Булар локалдык иштеп чыгуу үчүн гана: `olimp.tapkych.com` базасынан 2026-10-28 өчүрүлгөн.
 
 | Роль              | Email                       | Пароль         |
 | ----------------- | --------------------------- | -------------- |
@@ -80,6 +80,19 @@ Seed `SEED_DEMO_USERS=false` болбосо түзүлөт. **Продакшнд
 - 30 каталог маселеси (математика 15, физика 10, информатика 5) + 3 жарыш маселеси — баары эки тилде, кеңеши жана чечими менен
 - 3 жетишкендик (деңгээлдер `backend/src/config/levels.ts` ичинде)
 - Демо аккаунттар, демо класс, бир жумадан кийин башталуучу жарыш
+
+## Кошумча маселелер (`content/problems/`)
+
+Seed'ден тышкаркы маселелер JSON топтомдору катары сакталат (формат: [`docs/problem-format.md`](docs/problem-format.md)) жана импорт аркылуу кошулат:
+
+```bash
+npm run problems:import -w backend -- --file ../content/problems/batch-01.json --status PUBLISHED --dry-run
+npm run problems:import -w backend -- --file ../content/problems/batch-01.json --status PUBLISHED
+```
+
+- `batch-01.json` — 43 маселе (математика 16, физика 13, информатика 14), эки тилде, кеңеш жана чечим менен. Продакшнга 2026-10-28 импорттолгон.
+
+Импорт slug боюнча жаңыртат, ошондуктан файлды оңдоп, кайра импорттосо болот.
 
 ## Папкалардын түзүлүшү
 
