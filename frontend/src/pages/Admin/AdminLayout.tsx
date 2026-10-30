@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router-dom';
+import { PageSuspense } from '../../components/layout/PageLoader';
 import './Admin.css';
 
 const LINKS = [
@@ -33,7 +34,9 @@ export function AdminLayout() {
         ))}
       </nav>
       <div className="admin__content">
-        <Outlet />
+        <PageSuspense>
+          <Outlet />
+        </PageSuspense>
       </div>
     </div>
   );

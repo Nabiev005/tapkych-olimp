@@ -137,8 +137,7 @@ export async function submitAnswer(
         }),
       ]);
 
-      const solved = await tx.problemProgress.count({ where: { userId, status: 'SOLVED' } });
-      achievements = await grantAchievements(tx, userId, { solved, streak: currentStreak });
+      achievements = await grantAchievements(tx, userId, { streak: currentStreak });
     }
 
     await tx.submission.create({

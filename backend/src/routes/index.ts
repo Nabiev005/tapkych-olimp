@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as classes from '../controllers/classes.js';
 import * as geo from '../controllers/geo.js';
+import * as lessons from '../controllers/lessons.js';
 import * as me from '../controllers/me.js';
 import * as problems from '../controllers/problems.js';
 import * as rating from '../controllers/rating.js';
@@ -34,6 +35,8 @@ export function createApiRouter(): Router {
   router.get('/subjects/:slug/topics', problems.listTopics);
   router.use('/problems', createProblemsRouter());
   router.get('/daily', optionalAuth, rating.daily);
+  router.get('/lessons', lessons.listLessons);
+  router.get('/lessons/:slug', lessons.getLesson);
 
   router.get('/leaderboard', optionalAuth, rating.leaderboard);
   router.get('/leaderboard/schools', rating.schoolLeaderboard);

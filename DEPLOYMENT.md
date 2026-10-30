@@ -67,6 +67,11 @@ npm run db:deploy
 - **Демо аккаунттарды өчүрүү** (продакшнда милдеттүү, ТЗ 11-бөлүм): локалдык компьютерден `npm run demo:remove -w backend`. Админ аккаунтуңуз (`ajbeknabiev90@gmail.com`) өчпөйт.
 - Жаңы админ: `npm run admin:create -w backend -- --email … --password … --name …`.
 - Маселелерди массалык кошуу: админ панели → Импорт, же `npm run problems:import -w backend -- --file …` ([docs/problem-format.md](docs/problem-format.md)).
+- Жетишкендиктердин тизмеси өзгөрсө (`backend/prisma/seed-data/taxonomy.ts`): `npm run achievements:sync -w backend`. Башка маалыматтарга тийбейт.
+
+### Google үчүн алдын ала даярдалган барактар
+
+`/problems/:slug`, `/theory` жана `/theory/:slug` даректери `vercel.json` аркылуу API функциясына багытталат. Функция `frontend/dist/index.html` шаблонуна барактын аталышын, сүрөттөмөсүн жана текстин коюп берет, андан кийин React кадимкидей ишке кирет. Шаблонду build убагында `scripts/embed-spa-template.mjs` `backend/dist/spaTemplate.js` файлына жазат. Ошондуктан Vercel'деги build буйругу `npm run build` (root) бойдон калышы керек.
 
 ## 5. Жаңыртуу
 

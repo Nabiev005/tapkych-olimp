@@ -385,3 +385,9 @@
     font-size: var(--text-base);
   }
 }
+
+.page-loader {
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+}

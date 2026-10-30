@@ -1,5 +1,5 @@
 import { getData, postData, api } from './api';
-import type { AnswerType, OlympiadLevel, ProblemCard, SlugRef } from './problems';
+import type { AnswerType, Choice, OlympiadLevel, ProblemCard, SlugRef } from './problems';
 
 export interface TeachingClass {
   id: string;
@@ -153,3 +153,26 @@ export const classesApi = {
   propose: (payload: ProblemPayload) => postData<{ slug: string }>('/proposals', payload),
   myProposals: () => getData<Proposal[]>('/proposals'),
 };
+
+export interface AssignmentSheet {
+  id: string;
+  titleKy: string;
+  titleRu: string | null;
+  dueDate: string | null;
+  class: { id: string; name: string };
+  problems: {
+    id: string;
+    titleKy: string;
+    titleRu: string | null;
+    statementKy: string;
+    statementRu: string | null;
+    answerType: AnswerType;
+    choices: Choice[] | null;
+    difficulty: number;
+  }[];
+}
+
+export const assignmentSheet = (id: string, assignmentId: string) =>
+  getData<AssignmentSheet>(
+    `/classes/${encodeURIComponent(id)}/assignments/${encodeURIComponent(assignmentId)}/sheet`,
+  );

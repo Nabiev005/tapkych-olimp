@@ -56,6 +56,11 @@ export async function getAssignment(req: Request, res: Response): Promise<void> 
   sendData(res, await assignmentService.getAssignment(id, assignmentId, currentUser(req)));
 }
 
+export async function getAssignmentSheet(req: Request, res: Response): Promise<void> {
+  const { id, assignmentId } = assignmentParamSchema.parse(req.params);
+  sendData(res, await assignmentService.getAssignmentSheet(id, assignmentId, currentUser(req)));
+}
+
 export async function createProposal(req: Request, res: Response): Promise<void> {
   const input = problemInputSchema.parse(req.body);
   sendData(res, await proposalService.createProposal(currentUser(req).id, input), 201);

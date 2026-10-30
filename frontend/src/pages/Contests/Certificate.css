@@ -1,0 +1,125 @@
+/* Fixed brand colors: the certificate looks the same in both themes and on paper */
+.certificate {
+  --cert-navy: #1c2a6c;
+  --cert-blue: #1d5bd8;
+  --cert-gold: #f0a81c;
+  --cert-muted: #4a5578;
+  aspect-ratio: 297 / 210;
+  max-width: 1000px;
+  margin-inline: auto;
+  background: #fff;
+  color: var(--cert-navy);
+  padding: clamp(10px, 2.2%, 24px);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgb(28 42 108 / 0.15);
+  container-type: inline-size;
+}
+
+.certificate__frame {
+  height: 100%;
+  border: 3px solid var(--cert-navy);
+  outline: 1px solid var(--cert-blue);
+  outline-offset: -9px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.2cqw;
+  padding: 3cqw 5cqw;
+}
+
+.certificate--winner .certificate__frame {
+  border-color: var(--cert-gold);
+}
+
+.certificate__brand {
+  display: flex;
+  align-items: center;
+  gap: 1.2cqw;
+  font-size: 2.6cqw;
+  color: var(--cert-navy);
+}
+
+.certificate__brand svg {
+  width: 5.6cqw;
+  height: 5.6cqw;
+}
+
+.certificate__title {
+  margin: 1cqw 0 0;
+  font-size: 5.4cqw;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cert-navy);
+}
+
+.certificate__degree {
+  margin: 0;
+  font-size: 3cqw;
+  font-weight: 700;
+  color: var(--cert-gold);
+}
+
+.certificate__awarded {
+  margin: 1.5cqw 0 0;
+  font-size: 1.8cqw;
+  color: var(--cert-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.certificate__name {
+  margin: 0;
+  font-size: 4.2cqw;
+  font-weight: 700;
+  color: var(--cert-blue);
+  border-bottom: 2px solid var(--cert-gold);
+  padding-bottom: 0.6cqw;
+}
+
+.certificate__reason {
+  margin: 0;
+  max-width: 80%;
+  font-size: 2.1cqw;
+  line-height: 1.4;
+}
+
+.certificate__stats {
+  margin: 0;
+  font-size: 1.8cqw;
+  color: var(--cert-muted);
+}
+
+.certificate__footer {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+  font-size: 1.4cqw;
+  color: var(--cert-muted);
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+  .certificate-page {
+    padding: 0;
+    max-width: none;
+  }
+  .certificate {
+    width: 297mm;
+    height: 210mm;
+    max-width: none;
+    aspect-ratio: auto;
+    border-radius: 0;
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

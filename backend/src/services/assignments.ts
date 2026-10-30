@@ -147,3 +147,48 @@ export async function myAssignments(userId: string) {
     }))
     .filter((a) => a.solvedCount < a.problemCount);
 }
+
+/**
+ * Printable sheet: problem statements (and choices) in order, for the teacher.
+ * No hints, solutions or answers.
+ */
+export async function getAssignmentSheet(classId: string, assignmentId: string, viewer: Viewer) {
+  const assignment = await prisma.assignment.findFirst({
+    where: { id: assignmentId, classId },
+    select: {
+      id: true,
+      titleKy: true,
+      titleRu: true,
+      dueDate: true,
+      class: { select: { id: true, name: true, teacherId: true } },
+      problems: {
+        orderBy: { order: 'asc' },
+        select: {
+          problem: {
+            select: {
+              id: true,
+              titleKy: true,
+              titleRu: true,
+              statementKy: true,
+              statementRu: true,
+              answerType: true,
+              choices: true,
+              difficulty: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  const isTeacher = assignment?.class.teacherId === viewer.id || viewer.role === 'ADMIN';
+  if (!assignment || !isTeacher) throw AppError.notFound();
+
+  return {
+    id: assignment.id,
+    titleKy: assignment.titleKy,
+    titleRu: assignment.titleRu,
+    dueDate: assignment.dueDate,
+    class: { id: assignment.class.id, name: assignment.class.name },
+    problems: assignment.problems.map((p) => p.problem),
+  };
+}

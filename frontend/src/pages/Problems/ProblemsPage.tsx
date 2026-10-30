@@ -1,7 +1,7 @@
-import { Search, SearchX, X } from 'lucide-react';
+import { GraduationCap, Search, SearchX, X } from 'lucide-react';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ProblemCard } from '../../components/olimp/ProblemCard';
 import { Alert } from '../../components/ui/Alert';
 import { Button } from '../../components/ui/Button';
@@ -114,6 +114,10 @@ export function ProblemsPage() {
       <header className="page-header">
         <h1 className="page-header__title">{t('problems.title')}</h1>
         <p className="page-header__subtitle">{t('problems.subtitle')}</p>
+        <Link to="/theory" className="theory-link">
+          <GraduationCap size={18} aria-hidden="true" />
+          {t('theory.banner')}
+        </Link>
       </header>
 
       <section className="filters card" aria-label={t('problems.filters.label')}>

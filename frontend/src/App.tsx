@@ -1,36 +1,69 @@
+import { lazy, type ComponentType } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
-import { AdminDaily } from './pages/Admin/AdminDaily';
-import { AdminImport } from './pages/Admin/AdminImport';
-import { AdminLayout } from './pages/Admin/AdminLayout';
-import { AdminOverview } from './pages/Admin/AdminOverview';
-import { AdminProblemEdit } from './pages/Admin/AdminProblemEdit';
-import { AdminProblems, AdminProposals } from './pages/Admin/AdminProblems';
-import { AdminTaxonomy } from './pages/Admin/AdminTaxonomy';
-import { AdminUsers } from './pages/Admin/AdminUsers';
 import { GuestOnly, RequireAuth } from './components/layout/RouteGuards';
 import { AuthProvider } from './hooks/AuthProvider';
-import { ForgotPasswordPage } from './pages/Auth/ForgotPasswordPage';
-import { LoginPage } from './pages/Auth/LoginPage';
-import { RegisterPage } from './pages/Auth/RegisterPage';
-import { ResetPasswordPage } from './pages/Auth/ResetPasswordPage';
-import { AssignmentPage } from './pages/Classes/AssignmentPage';
-import { ClassesPage } from './pages/Classes/ClassesPage';
-import { ClassPage } from './pages/Classes/ClassPage';
-import { NewAssignmentPage } from './pages/Classes/NewAssignmentPage';
-import { ContestPage } from './pages/Contests/ContestPage';
-import { ContestResultsPage } from './pages/Contests/ContestResultsPage';
-import { ContestsPage } from './pages/Contests/ContestsPage';
-import { NewContestPage } from './pages/Contests/NewContestPage';
 import { HomePage } from './pages/Home/HomePage';
-import { LeaderboardPage } from './pages/Leaderboard/LeaderboardPage';
 import { NotFoundPage } from './pages/NotFound/NotFoundPage';
-import { ProblemPage } from './pages/Problem/ProblemPage';
-import { ProblemsPage } from './pages/Problems/ProblemsPage';
-import { ProfilePage, PublicProfilePage } from './pages/Profile/ProfilePage';
-import { ProposePage } from './pages/Propose/ProposePage';
 
-// Sections from later stages show a placeholder for now.
+/** Code-split page: loaded on first visit, so the landing page stays small. */
+function page<K extends string>(
+  load: () => Promise<Record<K, ComponentType>>,
+  name: K,
+): ComponentType {
+  return lazy(async () => {
+    const component: ComponentType = (await load())[name];
+    return { default: component };
+  });
+}
+
+const AdminDaily = page(() => import('./pages/Admin/AdminDaily'), 'AdminDaily');
+const AdminImport = page(() => import('./pages/Admin/AdminImport'), 'AdminImport');
+const AdminLayout = page(() => import('./pages/Admin/AdminLayout'), 'AdminLayout');
+const AdminOverview = page(() => import('./pages/Admin/AdminOverview'), 'AdminOverview');
+const AdminProblemEdit = page(() => import('./pages/Admin/AdminProblemEdit'), 'AdminProblemEdit');
+const AdminProblems = page(() => import('./pages/Admin/AdminProblems'), 'AdminProblems');
+const AdminProposals = page(() => import('./pages/Admin/AdminProblems'), 'AdminProposals');
+const AdminTaxonomy = page(() => import('./pages/Admin/AdminTaxonomy'), 'AdminTaxonomy');
+const AdminUsers = page(() => import('./pages/Admin/AdminUsers'), 'AdminUsers');
+const ForgotPasswordPage = page(
+  () => import('./pages/Auth/ForgotPasswordPage'),
+  'ForgotPasswordPage',
+);
+const LoginPage = page(() => import('./pages/Auth/LoginPage'), 'LoginPage');
+const RegisterPage = page(() => import('./pages/Auth/RegisterPage'), 'RegisterPage');
+const ResetPasswordPage = page(() => import('./pages/Auth/ResetPasswordPage'), 'ResetPasswordPage');
+const AssignmentPrintPage = page(
+  () => import('./pages/Classes/AssignmentPrintPage'),
+  'AssignmentPrintPage',
+);
+const AssignmentPage = page(() => import('./pages/Classes/AssignmentPage'), 'AssignmentPage');
+const ClassesPage = page(() => import('./pages/Classes/ClassesPage'), 'ClassesPage');
+const ClassPage = page(() => import('./pages/Classes/ClassPage'), 'ClassPage');
+const NewAssignmentPage = page(
+  () => import('./pages/Classes/NewAssignmentPage'),
+  'NewAssignmentPage',
+);
+const ContestPage = page(() => import('./pages/Contests/ContestPage'), 'ContestPage');
+const ContestResultsPage = page(
+  () => import('./pages/Contests/ContestResultsPage'),
+  'ContestResultsPage',
+);
+const CertificatePage = page(() => import('./pages/Contests/CertificatePage'), 'CertificatePage');
+const ContestsPage = page(() => import('./pages/Contests/ContestsPage'), 'ContestsPage');
+const NewContestPage = page(() => import('./pages/Contests/NewContestPage'), 'NewContestPage');
+const LeaderboardPage = page(
+  () => import('./pages/Leaderboard/LeaderboardPage'),
+  'LeaderboardPage',
+);
+const ProblemPage = page(() => import('./pages/Problem/ProblemPage'), 'ProblemPage');
+const ProblemsPage = page(() => import('./pages/Problems/ProblemsPage'), 'ProblemsPage');
+const ProfilePage = page(() => import('./pages/Profile/ProfilePage'), 'ProfilePage');
+const PublicProfilePage = page(() => import('./pages/Profile/ProfilePage'), 'PublicProfilePage');
+const TheoryPage = page(() => import('./pages/Theory/TheoryPage'), 'TheoryPage');
+const LessonPage = page(() => import('./pages/Theory/LessonPage'), 'LessonPage');
+const ProposePage = page(() => import('./pages/Propose/ProposePage'), 'ProposePage');
+
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -38,6 +71,8 @@ const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/problems', element: <ProblemsPage /> },
       { path: '/problems/:slug', element: <ProblemPage /> },
+      { path: '/theory', element: <TheoryPage /> },
+      { path: '/theory/:slug', element: <LessonPage /> },
       { path: '/leaderboard', element: <LeaderboardPage /> },
       { path: '/u/:id', element: <PublicProfilePage /> },
       { path: '/contests', element: <ContestsPage /> },
@@ -51,6 +86,14 @@ const router = createBrowserRouter([
       },
       { path: '/contests/:id', element: <ContestPage /> },
       { path: '/contests/:id/results', element: <ContestResultsPage /> },
+      {
+        path: '/contests/:id/certificate',
+        element: (
+          <RequireAuth>
+            <CertificatePage />
+          </RequireAuth>
+        ),
+      },
       {
         path: '/profile',
         element: (
@@ -88,6 +131,14 @@ const router = createBrowserRouter([
         element: (
           <RequireAuth>
             <AssignmentPage />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/classes/:id/assignments/:assignmentId/print',
+        element: (
+          <RequireAuth permission="assignments:create">
+            <AssignmentPrintPage />
           </RequireAuth>
         ),
       },

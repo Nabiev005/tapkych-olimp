@@ -7,16 +7,19 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { language } from './middleware/language.js';
 import { createApiLimiter } from './middleware/rateLimit.js';
 import { createApiRouter } from './routes/index.js';
+import { createSeoRouter } from './routes/seo.js';
 import { getSitemap } from './services/sitemap.js';
 import { AppError } from './utils/errors.js';
 
-export function createApp() {
+export function createApp(options: { spaTemplate?: string } = {}) {
   const app = express();
 
   app.set('trust proxy', 1); // behind Vercel's proxy
   app.disable('x-powered-by');
 
   app.use(language);
+  // Pre-rendered HTML pages: same headers as the static index.html (inline theme script)
+  app.use(createSeoRouter(options.spaTemplate));
   app.use(helmet());
   app.use(
     cors({

@@ -1,0 +1,90 @@
+.print-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.print-toolbar__hint {
+  flex: 1 1 260px;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.print-sheet {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+}
+
+.print-sheet__brand {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.print-sheet__title {
+  margin: var(--space-2) 0;
+  font-size: 1.5rem;
+}
+
+.print-sheet__fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.print-sheet__problems {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-6) 0 0;
+  display: grid;
+  gap: var(--space-6);
+}
+
+.print-problem {
+  break-inside: avoid;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.print-problem__title {
+  margin: 0 0 var(--space-2);
+  font-size: 1.1rem;
+}
+
+.print-problem__choices {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.print-problem__answer {
+  margin: var(--space-4) 0 0;
+}
+
+@media (max-width: 600px) {
+  .print-sheet {
+    padding: var(--space-4);
+  }
+}
+
+@media print {
+  .print-page {
+    padding: 0;
+    max-width: none;
+  }
+  .print-sheet {
+    border: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+  }
+  .print-problem {
+    border-color: #999;
+  }
+}

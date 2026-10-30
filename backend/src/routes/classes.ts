@@ -19,6 +19,11 @@ export function createClassesRouter(): Router {
     classes.createAssignment,
   );
   router.get('/:id/assignments/:assignmentId', requireAuth, classes.getAssignment);
+  router.get(
+    '/:id/assignments/:assignmentId/sheet',
+    requirePermission('assignments:create'),
+    classes.getAssignmentSheet,
+  );
 
   return router;
 }

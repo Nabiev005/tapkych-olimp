@@ -8,7 +8,7 @@ export function BottomNav() {
 
   return (
     <nav className="bottom-nav" aria-label={t('common.nav.mobile')}>
-      {NAV_ITEMS.map(({ to, labelKey, icon: Icon }) => (
+      {NAV_ITEMS.filter((item) => item.mobile).map(({ to, labelKey, icon: Icon }) => (
         <NavLink
           key={to}
           to={to}

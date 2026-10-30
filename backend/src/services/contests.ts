@@ -3,6 +3,7 @@ import { hasPermission, type Role } from '../config/permissions.js';
 import { prisma } from '../db.js';
 import { AppError } from '../utils/errors.js';
 import type { CreateContestInput } from '../validators/contests.js';
+import { grantAchievements } from './achievements.js';
 import { checkAnswer } from './answerChecker.js';
 import {
   contestPhase,
@@ -262,6 +263,7 @@ export async function start(id: string, viewer: Viewer) {
     update: { startedAt: now },
     create: { contestId: id, userId: viewer.id, startedAt: now },
   });
+  await grantAchievements(prisma, viewer.id);
   return participantState(contest, participant, now);
 }
 

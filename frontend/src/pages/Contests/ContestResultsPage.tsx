@@ -1,4 +1,4 @@
-import { ArrowLeft, CheckCircle2, Crown, Minus, XCircle } from 'lucide-react';
+import { ArrowLeft, Award, CheckCircle2, Crown, Minus, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
@@ -65,6 +65,12 @@ export function ContestResultsPage() {
         {pickText(data.contest.titleKy, data.contest.titleRu, language).text}
       </Link>
       <h1 className="page-header__title">{t('contests.results')}</h1>
+      {data.contest.phase === 'finished' && data.rows.some((r) => r.user.id === user?.id) && (
+        <ButtonLink to={`/contests/${id}/certificate`} variant="secondary" size="sm">
+          <Award size={18} aria-hidden="true" />
+          {t('contests.certificate.button')}
+        </ButtonLink>
+      )}
 
       {data.rows.length === 0 ? (
         <p className="dashboard__empty">{t('contests.noParticipants')}</p>

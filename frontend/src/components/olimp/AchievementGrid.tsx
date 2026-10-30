@@ -1,10 +1,43 @@
-import { Award, Flame, Lock, Sparkles, Trophy, type LucideIcon } from 'lucide-react';
+import {
+  Atom,
+  Award,
+  BookOpenCheck,
+  Cpu,
+  Crown,
+  Flame,
+  Lock,
+  Medal,
+  Mountain,
+  MountainSnow,
+  Sigma,
+  Sparkles,
+  Timer,
+  Trophy,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../../hooks/useLanguage';
 import type { ProfileAchievement } from '../../services/rating';
 import { formatDate } from '../../utils/format';
 
-const ICONS: Record<string, LucideIcon> = { Sparkles, Flame, Trophy };
+// Icon names come from Achievement.icon (seed data)
+const ICONS: Record<string, LucideIcon> = {
+  Atom,
+  Award,
+  BookOpenCheck,
+  Cpu,
+  Crown,
+  Flame,
+  Medal,
+  Mountain,
+  MountainSnow,
+  Sigma,
+  Sparkles,
+  Timer,
+  Trophy,
+  Zap,
+};
 
 export function AchievementGrid({ achievements }: { achievements: ProfileAchievement[] }) {
   const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { ArrowLeft, CheckCircle2, Minus, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Minus, Printer, XCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
@@ -97,6 +97,16 @@ export function AssignmentPage() {
           <p className="page-header__subtitle">
             {t('classes.due', { date: formatDateTime(data.dueDate, language) })}
           </p>
+        )}
+        {data.isTeacher && (
+          <ButtonLink
+            to={`/classes/${id}/assignments/${assignmentId}/print`}
+            variant="secondary"
+            size="sm"
+          >
+            <Printer size={18} aria-hidden="true" />
+            {t('classes.print.button')}
+          </ButtonLink>
         )}
       </header>
 

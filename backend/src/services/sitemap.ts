@@ -1,4 +1,5 @@
 import { env } from '../config/env.js';
+import { LESSONS } from '../content/lessons.js';
 import { prisma } from '../db.js';
 import { TtlCache } from '../utils/cache.js';
 import { visibleProblemWhere } from './problemQueries.js';
@@ -8,6 +9,7 @@ import { visibleProblemWhere } from './problemQueries.js';
 const STATIC_PAGES = [
   { path: '/', priority: '1.0', changefreq: 'daily' },
   { path: '/problems', priority: '0.9', changefreq: 'daily' },
+  { path: '/theory', priority: '0.8', changefreq: 'weekly' },
   { path: '/leaderboard', priority: '0.6', changefreq: 'daily' },
   { path: '/contests', priority: '0.7', changefreq: 'daily' },
   { path: '/register', priority: '0.5', changefreq: 'monthly' },
@@ -40,6 +42,9 @@ export function getSitemap(): Promise<string> {
     const lines = [
       ...STATIC_PAGES.map((p) =>
         url(p.path, `<changefreq>${p.changefreq}</changefreq><priority>${p.priority}</priority>`),
+      ),
+      ...LESSONS.map((l) =>
+        url(`/theory/${l.slug}`, '<changefreq>monthly</changefreq><priority>0.7</priority>'),
       ),
       ...problems.map((p) =>
         url(

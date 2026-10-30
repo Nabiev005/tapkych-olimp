@@ -6,6 +6,9 @@
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api" },
     { "source": "/sitemap.xml", "destination": "/api" },
+    { "source": "/problems/:slug", "destination": "/api" },
+    { "source": "/theory", "destination": "/api" },
+    { "source": "/theory/:slug", "destination": "/api" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

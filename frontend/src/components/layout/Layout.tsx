@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { BottomNav } from './BottomNav';
 import { Footer } from './Footer';
 import { Header } from './Header';
+import { PageSuspense } from './PageLoader';
 import './layout.css';
 
 export function Layout() {
@@ -15,7 +16,9 @@ export function Layout() {
       </a>
       <Header />
       <main id="main" className="app-main" tabIndex={-1}>
-        <Outlet />
+        <PageSuspense>
+          <Outlet />
+        </PageSuspense>
       </main>
       <Footer />
       <BottomNav />

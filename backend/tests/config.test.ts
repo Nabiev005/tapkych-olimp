@@ -70,3 +70,16 @@ describe('permissions', () => {
     expect(hasPermission('ADMIN', 'classes:create')).toBe(true);
   });
 });
+
+describe('achievement metrics', () => {
+  it('derives the metric from the code', async () => {
+    const { metricFor } = await import('../src/services/achievements.js');
+    expect(metricFor('first-solve')).toEqual({ kind: 'solved' });
+    expect(metricFor('solved-50')).toEqual({ kind: 'solved' });
+    expect(metricFor('streak-30')).toEqual({ kind: 'streak' });
+    expect(metricFor('hard-1')).toEqual({ kind: 'hard' });
+    expect(metricFor('contest-5')).toEqual({ kind: 'contests' });
+    expect(metricFor('math-10')).toEqual({ kind: 'subject', subject: 'math' });
+    expect(metricFor('weird')).toBeNull();
+  });
+});

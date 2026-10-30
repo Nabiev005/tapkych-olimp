@@ -188,7 +188,8 @@ function ProblemView({ slug }: { slug: string }) {
 
       <header className="problem-header">
         <p className="problem-header__crumbs">
-          {pickName(problem.subject, language)} · {pickName(problem.topic, language)}
+          {pickName(problem.subject, language)} · {pickName(problem.topic, language)} ·{' '}
+          <Link to={`/theory/${problem.topic.slug}`}>{t('theory.lessonLink')}</Link>
         </p>
         <h1 className="problem-header__title">
           {title.text}

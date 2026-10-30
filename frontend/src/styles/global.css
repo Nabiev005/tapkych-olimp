@@ -88,3 +88,27 @@ textarea {
     scroll-behavior: auto !important;
   }
 }
+
+/* Printing: only the page content */
+@media print {
+  .site-header,
+  .site-footer,
+  .bottom-nav,
+  .skip-link,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .app-main {
+    padding: 0;
+  }
+}
+
+@media print {
+  .app-shell {
+    padding-bottom: 0 !important;
+  }
+}
